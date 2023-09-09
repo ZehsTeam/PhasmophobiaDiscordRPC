@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <Resource Include="img\map-10_ridgeview_court.png" />
-    <Resource Include="img\map-13_willow_stree.png" />
+    <Resource Include="img\map-13_willow_street.png" />
     <Resource Include="img\map-42_edgefield_road.png" />
     <Resource Include="img\map-6_tanglewood_drive.png" />
     <Resource Include="img\map-bleasdale_farmhouse.png" />

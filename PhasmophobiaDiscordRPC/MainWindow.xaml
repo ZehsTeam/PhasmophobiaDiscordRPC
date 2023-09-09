@@ -52,7 +52,7 @@
                 </StackPanel>
             </Grid>
         </Grid>
-
+        
         <!-- Window Content -->
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>

@@ -1,6 +1,7 @@
 # PhasmophobiaDiscordRPC
 Display a custom Discord rich presence for Phasmophobia depending on the current game state!
 
+Uses [Lachee's DiscordRPC for C#](https://github.com/Lachee/discord-rpc-csharp)
 
 ### Old Phasmophobia Discord rich presence:<br>
 ![Default](https://github.com/ZehsTeam/PhasmophobiaDiscordRPC/blob/main/Images/PhasmophobiaRichPresence-Default.png?raw=true)

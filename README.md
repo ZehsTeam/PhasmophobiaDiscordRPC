@@ -3,7 +3,7 @@ Display a custom Discord rich presence for Phasmophobia depending on the current
 
 Uses [Lachee's DiscordRPC for C#](https://github.com/Lachee/discord-rpc-csharp)
 
-![App](https://i.imgur.com/OpO3Qd4.png?raw=true)
+![App](https://i.imgur.com/9kZnuSQ.png?raw=true)
 
 #### Old Phasmophobia Discord rich presence:<be>
 ![Default](https://i.imgur.com/bRYOoxi.png?raw=true)

@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <Version>0.1.5</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DiscordRichPresence" Version="1.2.1.24" />
+    <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
+    <PackageReference Include="NETStandard.Library" Version="2.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="img\map-10_ridgeview_court.png" />
+    <Resource Include="img\map-13_willow_stree.png" />
+    <Resource Include="img\map-42_edgefield_road.png" />
+    <Resource Include="img\map-6_tanglewood_drive.png" />
+    <Resource Include="img\map-bleasdale_farmhouse.png" />
+    <Resource Include="img\map-brownstone_high_school.png" />
+    <Resource Include="img\map-camp_woodwind.png" />
+    <Resource Include="img\map-grafton_farmhouse.png" />
+    <Resource Include="img\map-maple_lodge_campsite.png" />
+    <Resource Include="img\map-prison.png" />
+    <Resource Include="img\map-sunny_meadows.png" />
+    <Resource Include="img\map-sunny_meadows_restricted.png" />
+    <Resource Include="img\logo.png" />
+  </ItemGroup>
+</Project>

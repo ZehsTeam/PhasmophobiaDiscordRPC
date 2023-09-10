@@ -1,5 +1,5 @@
 # PhasmophobiaDiscordRPC
-Display a custom Discord rich presence for Phasmophobia depending on the current game state!
+Display a custom Discord rich presence for Phasmophobia depending on the current game state.
 
 Uses [Lachee's DiscordRPC for C#](https://github.com/Lachee/discord-rpc-csharp)
 

@@ -2,17 +2,17 @@
 {
     public class Map
     {
-        public MapType type;
-        public string name = "";
-        public string imageKey = "";
-        public string levelName = "";
+        public MapType MapType;
+        public string Name;
+        public string LevelName;
+        public string ImageKey;
 
-        public Map(MapType type, string name, string imageKey, string levelName)
+        public Map(MapType mapType, string name, string levelName, string imageKey)
         {
-            this.type = type;
-            this.name = name;
-            this.imageKey = imageKey;
-            this.levelName = levelName;
+            MapType = mapType;
+            Name = name;
+            LevelName = levelName;
+            ImageKey = imageKey;
         }
     }
 }

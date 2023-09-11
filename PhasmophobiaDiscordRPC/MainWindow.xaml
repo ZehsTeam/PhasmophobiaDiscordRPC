@@ -37,7 +37,7 @@
 
             <!-- Title -->
             <Grid Grid.Column="0" Margin="10,0,0,0" VerticalAlignment="Center">
-                <TextBlock>Phasmophobia Rich Presence v0.1.4.1</TextBlock>
+                <TextBlock>Phasmophobia Rich Presence v1.0.0</TextBlock>
             </Grid>
             
             <!-- Buttons -->
@@ -171,6 +171,155 @@
                             </ComboBox>
                         </Border>
                     </StackPanel>
+                    
+                    <!-- Players -->
+                    <StackPanel Orientation="Vertical" Visibility="Visible">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Grid Grid.Column="0">
+                                <TextBlock FontSize="10" Foreground="#B5BAC1" FontWeight="Bold" Margin="0,0,0,5">PLAYERS</TextBlock>
+                            </Grid>
+
+                            <Grid Grid.Column="1">
+                                <TextBlock FontSize="10" Foreground="#B5BAC1" FontWeight="Bold" Margin="0,0,0,5">STEAM ID</TextBlock>
+                            </Grid>
+                        </Grid>
+
+                        <Border x:Name="PlayerListBorder" Height="120px" Background="#282b30" CornerRadius="3" Margin="0,0,0,10" Cursor="Arrow">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30px"/>
+                                    <RowDefinition Height="30px"/>
+                                    <RowDefinition Height="30px"/>
+                                    <RowDefinition Height="30px"/>
+                                </Grid.RowDefinitions>
+
+                                <!-- Player 1 -->
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="30px" x:Name="Player1HostColumn"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="30px" x:Name="Player1HostColumn2"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Grid Grid.Column="0" x:Name="Player1IconColumnGrid" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <materialDesign:PackIcon x:Name="Player1Icon" Kind="Crown" Foreground="Gold" />
+                                    </Grid>
+
+                                    <Grid Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBox x:Name="Player1UsernameTextBox" Text="Player 1" IsReadOnly="True"
+                                            Height="30px" FontSize="12" Padding="0" VerticalContentAlignment="Center" 
+                                            Foreground="#F2F3F5" CaretBrush="White"
+                                            materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                            BorderThickness="0"/>
+                                    </Grid>
+
+                                    <Grid Grid.Column="2">
+                                        <TextBox x:Name="Player1SteamIdTextBox" Text="#################" IsReadOnly="True"
+                                            Height="30px" FontSize="12" Padding="0" VerticalContentAlignment="Center" 
+                                            Foreground="#F2F3F5" CaretBrush="White"
+                                            materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                            BorderThickness="0"/>
+                                    </Grid>
+                                </Grid>
+
+                                <!-- Player 2 -->
+                                <Grid Grid.Row="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="8px" x:Name="Player2HostColumn"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="8px" x:Name="Player2HostColumn2"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Grid Grid.Column="0" x:Name="Player2IconColumnGrid" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Hidden">
+                                        <materialDesign:PackIcon x:Name="Player2Icon" Kind="Crown" Foreground="Gold" />
+                                    </Grid>
+
+                                    <Grid Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBox x:Name="Player2UsernameTextBox" Text="Player 2" IsReadOnly="True"
+                                            Height="30px" FontSize="12" Padding="0" VerticalContentAlignment="Center" 
+                                            Foreground="#F2F3F5" CaretBrush="White"
+                                            materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                            BorderThickness="0"/>
+                                    </Grid>
+
+                                    <Grid Grid.Column="2">
+                                        <TextBox x:Name="Player2SteamIdTextBox" Text="#################" IsReadOnly="True"
+                                            Height="30px" FontSize="12" Padding="0" VerticalContentAlignment="Center" 
+                                            Foreground="#F2F3F5" CaretBrush="White"
+                                            materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                            BorderThickness="0"/>
+                                    </Grid>
+                                </Grid>
+
+                                <!-- Player 3 -->
+                                <Grid Grid.Row="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="8px" x:Name="Player3HostColumn"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="8px" x:Name="Player3HostColumn2"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Grid Grid.Column="0" x:Name="Player3IconColumnGrid" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Hidden">
+                                        <materialDesign:PackIcon x:Name="Player3Icon" Kind="Crown" Foreground="Gold" />
+                                    </Grid>
+
+                                    <Grid Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBox x:Name="Player3UsernameTextBox" Text="Player 3" IsReadOnly="True"
+                                            Height="30px" FontSize="12" Padding="0" VerticalContentAlignment="Center" 
+                                            Foreground="#F2F3F5" CaretBrush="White"
+                                            materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                            BorderThickness="0"/>
+                                    </Grid>
+
+                                    <Grid Grid.Column="2">
+                                        <TextBox x:Name="Player3SteamIdTextBox" Text="#################" IsReadOnly="True"
+                                            Height="30px" FontSize="12" Padding="0" VerticalContentAlignment="Center" 
+                                            Foreground="#F2F3F5" CaretBrush="White"
+                                            materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                            BorderThickness="0"/>
+                                    </Grid>
+                                </Grid>
+
+                                <!-- Player 4 -->
+                                <Grid Grid.Row="3">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="8px" x:Name="Player4HostColumn"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="8px" x:Name="Player4HostColumn2"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Grid Grid.Column="0" x:Name="Player4IconColumnGrid" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Hidden">
+                                        <materialDesign:PackIcon x:Name="Player4Icon" Kind="Crown" Foreground="Gold" />
+                                    </Grid>
+
+                                    <Grid Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBox x:Name="Player4UsernameTextBox" Text="Player 4" IsReadOnly="True"
+                                            Height="30px" FontSize="12" Padding="0" VerticalContentAlignment="Center" 
+                                            Foreground="#F2F3F5" CaretBrush="White"
+                                            materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                            BorderThickness="0"/>
+                                    </Grid>
+
+                                    <Grid Grid.Column="2">
+                                        <TextBox x:Name="Player4SteamIdTextBox" Text="#################" IsReadOnly="True"
+                                            Height="30px" FontSize="12" Padding="0" VerticalContentAlignment="Center" 
+                                            Foreground="#F2F3F5" CaretBrush="White"
+                                            materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                            BorderThickness="0"/>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
                 </StackPanel>
             </Grid>
 
@@ -188,7 +337,7 @@
 
                                 <!-- Phasmophobia RP Preview Images -->
                                 <Grid Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <Border Width="80px" Height="80px" CornerRadius="3">
+                                    <Border Width="80px" Height="80px" CornerRadius="8">
                                         <Border.Background>
                                             <ImageBrush x:Name="DiscordRichPresencePreviewImage" Stretch="Fill" ImageSource="{DynamicResource PreviewImage}"/>
                                         </Border.Background>

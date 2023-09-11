@@ -7,10 +7,11 @@ using System.Windows.Input;
 using System.Windows.Controls;
 using System.Text.RegularExpressions;
 using System.Windows.Media;
-using System.Windows.Documents;
 using System.Windows.Media.Imaging;
-using System.IO;
-using System.Threading;
+using System.Collections.Generic;
+using MaterialDesignThemes.Wpf;
+using System.Timers;
+using Timer = System.Timers.Timer;
 
 namespace PhasmophobiaDiscordRPC
 {
@@ -21,10 +22,11 @@ namespace PhasmophobiaDiscordRPC
     public partial class MainWindow : Window
     {
         public static MainWindow Instance;
-
-        private DiscordRpcClient client;
+        
+        private DiscordRpcClient _client;
 
         private static readonly Regex _lobbyCodeRegex = new Regex("^[0-9]+$");
+        private Timer _timer;
 
         public MainWindow()
         {
@@ -36,239 +38,228 @@ namespace PhasmophobiaDiscordRPC
 
         private void Initialize()
         {
-            MapManager.Initialize();
+            SetPhasmophobiaAppStatusUI(PhasmophobiaAppState.Closed);
+            SetPlayersListUI(new List<PlayerData>());
+            SetDiscordRichPresencePreviewUIState(false);
 
-            new GameStatus();
-            GameStatus.Instance.Initialize();
+            _timer = new Timer();
+            _timer.Elapsed += new ElapsedEventHandler(MainTick);
+            _timer.Interval = 1000;
+            _timer.Start();
 
-            SetPhasmophobiaAppStatus(PhasmophobiaAppStatus.None);
+            InitializeDiscordRpc();
+            ClearPresence();
+
+            MapDatabase.Initialize();
+
+            new GameStateManager();
+            new PlayerLogReader();
+
+            GameStateManager.Instance.Initialize();
+            PlayerLogReader.Instance.Initialize();
+
+            GameStateManager.Instance.OnPhasmophobiaAppStateChanged += OnPhasmophobiaAppStateChanged;
+
             LobbyTypeComboBox.SelectedIndex = 0;
             MaxPlayersComboBox.SelectedIndex = 0;
-            SetDiscordRichPresencePreviewIsEnabled(false);
         }
 
-        public void InitializeDiscordRPC()
+        private void Deinitialize()
+        {
+            GameStateManager.Instance.OnPhasmophobiaAppStateChanged -= OnPhasmophobiaAppStateChanged;
+
+            PlayerLogReader.Instance.Deinitialize();
+
+            DisposeDiscordRpc();
+        }
+
+        private void InitializeDiscordRpc()
         {
             /*
             Create a Discord client
             NOTE: 	If you are using Unity3D, you must use the full constructor and define
                      the pipe connection.
             */
-            client = new DiscordRpcClient("1147579832193011762");
+            _client = new DiscordRpcClient("1147579832193011762");
 
             //Set the logger
-            client.Logger = new ConsoleLogger() { Level = LogLevel.Warning };
+            _client.Logger = new ConsoleLogger() { Level = LogLevel.Warning };
 
             //Subscribe to events
-            client.OnReady += (sender, e) =>
+            _client.OnReady += (sender, e) =>
             {
-                Debug.WriteLine("Received Ready from user {0}", e.User.Username);
+                Debug.WriteLine($"Received Ready from user {e.User.Username}");
             };
 
-            client.OnClose += (sender, e) =>
+            _client.OnClose += (sender, e) =>
             {
                 Debug.WriteLine("Closed client");
             };
 
-            client.OnPresenceUpdate += (sender, e) =>
+            _client.OnPresenceUpdate += (sender, e) =>
             {
-                Debug.WriteLine("Received Update! {0}", e.Presence);
+                Debug.WriteLine($"Received Presence Update! {e.Presence}");
             };
 
             //Connect to the RPC
-            client.Initialize();
-
-            //Set the rich presence
-            //Call this as many times as you want and anywhere in your code.
-            SetMenusRPC();
+            _client.Initialize();
         }
 
-        public void StopDiscordRPC()
+        private void DisposeDiscordRpc()
         {
-            if (client == null) return;
+            if (_client == null) return;
+            if (_client.IsDisposed) return;
 
-            try
-            {
-                client.Dispose();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error!\n\n{ex}", "Phasmophobia Discord Rich Presence");
-            }
+            _client.Dispose();
         }
 
-        public void SetMenusRPC()
+        private void MainTick(object source, ElapsedEventArgs e)
         {
-            string imageKey = "logo";
-            string details = "In Menus";
-            string state = "";
+            if (GameStateManager.Instance.GetPhasmophobiaAppState() != PhasmophobiaAppState.Open) return;
 
-            DateTime dateTime = GameStatus.Instance.StartDateTime;
-
-            try
-            {
-                client.SetPresence(new RichPresence()
-                {
-                    Details = details,
-                    State = state,
-                    Assets = new Assets()
-                    {
-                        LargeImageKey = imageKey,
-                        LargeImageText = "Phasmophobia"
-                    },
-                    Timestamps = new Timestamps()
-                    {
-                        Start = GameStatus.Instance.StartDateTime
-                    }
-                });
-
-                SetDiscordRichPresencePreview(imageKey, details, state, dateTime);
-            } 
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error showing presence!\n\n{ex}", "Phasmophobia Discord Rich Presence");
-            }
+            DiscordRichPresenceTick();
+            PlayerLogReader.Instance.Tick();
         }
 
-        public void SetLobbyRPC()
+        #region Phasmophobia App State
+        private void OnPhasmophobiaAppStateChanged(PhasmophobiaAppState phasmophobiaAppState)
         {
-            ServerMode serverMode = GameStatus.Instance.ServerMode;
-            string serverRegion = GameStatus.Instance.ServerRegion;
-            LobbyType lobbyType = GameStatus.Instance.LobbyType;
-            string lobbyCode = GameStatus.Instance.LobbyCode;
-            int playerCount = GameStatus.Instance.PlayerCount;
-            int maxPlayerCount = GameStatus.Instance.MaxPlayers;
-            Difficulty difficulty = GameStatus.Instance.Difficulty;
-
-            string difficultyString = Enum.GetName(difficulty).Replace("ChallengeMode", "Challenge Mode");
-            string details = difficulty == Difficulty.None ? "In Lobby" : $"In Lobby - {difficultyString}";
-
-            string state = string.Empty;
-            if (serverMode == ServerMode.Online)
-            {
-                if (lobbyType == LobbyType.Public)
-                {
-                    state = $"Public Party ({playerCount} of {maxPlayerCount})";
-                }
-                else
-                {
-                    bool hasCode = lobbyCode != string.Empty;
-
-                    state = hasCode ? $"Private Party ({playerCount} of {maxPlayerCount}), {serverRegion}-{lobbyCode}"
-                        : $"Private Party ({playerCount} of {maxPlayerCount})";
-                }
-            }
-            else
-            {
-                state = "Singleplayer";
-            }
-
-            string imageKey = "logo";
-            DateTime dateTime = GameStatus.Instance.StartDateTime;
-
-            try
-            {
-                client.SetPresence(new RichPresence()
-                {
-                    Details = details,
-                    State = state,
-                    Assets = new Assets()
-                    {
-                        LargeImageKey = imageKey,
-                        LargeImageText = "Phasmophobia"
-                    },
-                    Timestamps = new Timestamps()
-                    {
-                        Start = dateTime
-                    }
-                });
-
-                SetDiscordRichPresencePreview(imageKey, details, state, dateTime);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error showing presence!\n\n{ex}", "Phasmophobia Discord Rich Presence");
-            }
+            if (phasmophobiaAppState == PhasmophobiaAppState.Closed) OnPhasmophobiaClosed();
+            if (phasmophobiaAppState == PhasmophobiaAppState.Open) OnPhasmophobiaOpened();
         }
 
-        public void SetInMatchRPC()
+        private void OnPhasmophobiaClosed()
         {
-            ServerMode serverMode = GameStatus.Instance.ServerMode;
-            string serverRegion = GameStatus.Instance.ServerRegion;
-            LobbyType lobbyType = GameStatus.Instance.LobbyType;
-            string lobbyCode = GameStatus.Instance.LobbyCode;
-            MapType mapType = GameStatus.Instance.MapType;
-            int playerCount = GameStatus.Instance.PlayerCount;
-            int maxPlayerCount = GameStatus.Instance.MaxPlayers;
-            Difficulty difficulty = GameStatus.Instance.Difficulty;
+            SetPhasmophobiaAppStatusUI(PhasmophobiaAppState.Closed);
+            SetPlayersListUI(new List<PlayerData>());
 
-            Map map = MapManager.GetMapByMapType(mapType);
-            if (map == null) return;
-
-            string difficultyString = Enum.GetName(difficulty).Replace("ChallengeMode", "Challenge Mode");
-            string details = difficulty == Difficulty.None ? map.name : $"{map.name} - {difficultyString}";
-
-            string state = string.Empty;
-            if (serverMode == ServerMode.Online)
-            {
-                if (lobbyType == LobbyType.Public)
-                {
-                    state = $"Public Party ({playerCount} of {maxPlayerCount})";
-                }
-                else
-                {
-                    bool hasCode = lobbyCode != string.Empty;
-
-                    state = hasCode ? $"Private Party ({playerCount} of {maxPlayerCount}), {serverRegion}-{lobbyCode}"
-                        : $"Private Party ({playerCount} of {maxPlayerCount})";
-                }
-            }
-            else
-            {
-                state = "Singleplayer";
-            }
-
-            string imageKey = map.imageKey;
-            DateTime dateTime = GameStatus.Instance.StartDateTime;
-
-            try
-            {
-                client.SetPresence(new RichPresence()
-                {
-                    Details = details,
-                    State = state,
-                    Assets = new Assets()
-                    {
-                        LargeImageKey = imageKey,
-                        LargeImageText = map.name,
-                        SmallImageKey = "logo",
-                        SmallImageText = "Phasmophobia"
-                    },
-                    Timestamps = new Timestamps()
-                    {
-                        Start = dateTime
-                    }
-                });
-
-                SetDiscordRichPresencePreview(imageKey, details, state, dateTime);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error showing presence!\n\n{ex}", "Phasmophobia Discord Rich Presence");
-            }
+            ClearPresence();
         }
 
-        private void Deinitialize()
+        private void OnPhasmophobiaOpened()
         {
-            StopDiscordRPC();
-        }
-
-        #region Window
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            StopDiscordRPC();
+            SetPhasmophobiaAppStatusUI(PhasmophobiaAppState.Open);
         }
         #endregion
+
+        #region Presence
+        public void ShowPresence(GameState gameState, LobbyType lobbyType, int maxPlayers, string lobbyCode)
+        {
+            if (_client == null) return;
+
+            try
+            {
+                Map map = MapDatabase.GetMapByMapType(gameState.MapType);
+            
+                string details = Presence_GetDetails(gameState, map);
+                string state = Presence_GetState(gameState, lobbyType, maxPlayers, lobbyCode);
+                Assets assets = Presence_GetAssetsForMap(map, gameState.PlayerState);
+
+                _client.SetPresence(new RichPresence()
+                {
+                    Details = details,
+                    State = state,
+                    Assets = assets,
+                    Timestamps = new Timestamps()
+                    {
+                        Start = gameState.StartDateTime
+                    }
+                });
+
+                SetDiscordRichPresencePreviewUI(map.ImageKey, details, state, gameState.StartDateTime);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error showing presence!\n\n{ex}", "Phasmophobia Rich Presence");
+            }
+        }
+        
+        public void ClearPresence()
+        {
+            SetDiscordRichPresencePreviewUIState(false);
+
+            if (_client == null) return;
+
+            _client.ClearPresence();
+        }
+
+        private string Presence_GetDetails(GameState gameState, Map map)
+        {
+            PlayerState playerState = gameState.PlayerState;
+            Difficulty difficulty = gameState.Difficulty;
+
+            if (playerState == PlayerState.Initializing) return "Initializing";
+            if (playerState == PlayerState.Menus) return "In Menus";
+
+            string details = "";
+
+            if (playerState == PlayerState.Lobby) details = "In Lobby";
+            if (playerState == PlayerState.InMatch) details = map.Name;
+
+            bool showDifficulty = difficulty != Difficulty.None && difficulty != Difficulty.Training;
+            if (showDifficulty)
+            {
+                details += $" - {Presence_GetDifficultyName(difficulty)}";
+            }
+
+            return details;
+        }
+
+        private string Presence_GetDifficultyName(Difficulty difficulty)
+        {
+            if (difficulty == Difficulty.ChallengeMode) return "Challenge Mode";
+            return Enum.GetName(difficulty);
+        }
+
+        private string Presence_GetState(GameState gameState, LobbyType lobbyType, int maxPlayers, string lobbyCode)
+        {
+            PlayerState playerState = gameState.PlayerState;
+            int playerCount = gameState.PlayerCount;
+            ServerMode serverMode = gameState.ServerMode;
+            string serverRegion = gameState.ServerRegion;
+
+            if (playerState == PlayerState.Initializing) return string.Empty;
+            if (playerState == PlayerState.Menus) return string.Empty;
+
+            if (serverMode == ServerMode.Offline) return "Singleplayer";
+
+            string state = lobbyType == LobbyType.Public ? "Public " : "";
+            state += $"Party ({playerCount} of {maxPlayers})";
+
+            if (lobbyCode != string.Empty && lobbyType == LobbyType.Private)
+            {
+                state += $", {serverRegion}-{lobbyCode}";
+            }
+
+            return state;
+        }
+
+        private Assets Presence_GetAssetsForMap(Map map, PlayerState playerState)
+        {
+            Assets assets = new Assets()
+            {
+                LargeImageKey = "logo"
+            };
+
+            if (playerState == PlayerState.InMatch)
+            {
+                assets = new Assets()
+                {
+                    LargeImageKey = map.ImageKey,
+                    LargeImageText = map.Name,
+                    SmallImageKey = "logo",
+                    SmallImageText = "Phasmophobia"
+                };
+            }
+
+            return assets;
+        }
+        #endregion
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            Deinitialize();
+        }
 
         #region Window - Topbar
         private void TopBar_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -288,12 +279,12 @@ namespace PhasmophobiaDiscordRPC
         #endregion
 
         #region Window - Phasmophobia App Status
-        public void SetPhasmophobiaAppStatus(PhasmophobiaAppStatus phasmophobiaAppStatus)
+        public void SetPhasmophobiaAppStatusUI(PhasmophobiaAppState phasmophobiaAppStatus)
         {
             string status = "Offline";
-            if (phasmophobiaAppStatus == PhasmophobiaAppStatus.Open) status = "Online";
+            if (phasmophobiaAppStatus == PhasmophobiaAppState.Open) status = "Online";
 
-            string foregroundColor = phasmophobiaAppStatus == PhasmophobiaAppStatus.Open ? "#4CAF50" : "#F44336";
+            string foregroundColor = phasmophobiaAppStatus == PhasmophobiaAppState.Open ? "#4CAF50" : "#F44336";
 
             this.Dispatcher.Invoke(() =>
             {
@@ -320,7 +311,7 @@ namespace PhasmophobiaDiscordRPC
 
             LobbyType lobbyType = value == "Public" ? LobbyType.Public : LobbyType.Private;
 
-            GameStatus.Instance.SetLobbyType(lobbyType);
+            GameStateManager.Instance.SetLobbyType(lobbyType);
 
             SetLobbyCodeIsEnabled(lobbyType == LobbyType.Private);
         }
@@ -334,13 +325,13 @@ namespace PhasmophobiaDiscordRPC
             LobbyTypeGrid.IsEnabled = isEnabled;
         }
 
-        public void SetLobbyRegion(string lobbyRegion)
+        public void SetLobbyRegionTextBlock(string lobbyRegion)
         {
             if (lobbyRegion == string.Empty) lobbyRegion = "##";
 
             this.Dispatcher.Invoke(() =>
             {
-                LobbyRegionTextBlock.Text = $"{lobbyRegion} —";
+                LobbyRegionTextBlock.Text = $"{lobbyRegion}  —";
             });
         }
 
@@ -382,7 +373,7 @@ namespace PhasmophobiaDiscordRPC
         {
             LobbyCodeTextBox.Text = string.Empty;
 
-            GameStatus.Instance.SetLobbyCode(string.Empty);
+            GameStateManager.Instance.SetLobbyCode(string.Empty);
         }
 
         private void LobbyCodeConfirmButton_Click(object sender, RoutedEventArgs e)
@@ -390,7 +381,7 @@ namespace PhasmophobiaDiscordRPC
             string lobbyCode = LobbyCodeTextBox.Text;
             if (lobbyCode.Length != 6) return;
 
-            GameStatus.Instance.SetLobbyCode(lobbyCode);
+            GameStateManager.Instance.SetLobbyCode(lobbyCode);
         }
         // Max Players
         public void SetMaxPlayersIsEnabled(bool isEnabled)
@@ -408,12 +399,66 @@ namespace PhasmophobiaDiscordRPC
 
             int maxPlayers = Convert.ToInt32(value);
 
-            GameStatus.Instance.SetMaxPlayers(maxPlayers);
+            GameStateManager.Instance.SetMaxPlayers(maxPlayers);
+        }
+
+        // Players
+        public void SetPlayersListUI(List<PlayerData> players)
+        {
+            int length = players.Count;
+
+            for (int i = 0; i < 4; i++)
+            {
+                if (i <= length - 1)
+                {
+                    PlayerData player = players[i];
+
+                    SetPlayerItem(i, player.Username, player.SteamId, player.PlayerType);
+                }
+                else
+                {
+                    ClearPlayerItem(i);
+                }
+            }
+        }
+
+        private void ClearPlayerItem(int index)
+        {
+            SetPlayerItem(index, string.Empty, string.Empty, PlayerType.Other);
+        }
+
+        private void SetPlayerItem(int index, string username, string steamId, PlayerType playerType)
+        {
+            ColumnDefinition column1 = new ColumnDefinition[4] { Player1HostColumn, Player2HostColumn, Player3HostColumn, Player4HostColumn }[index];
+            ColumnDefinition column2 = new ColumnDefinition[4] { Player1HostColumn2, Player2HostColumn2, Player3HostColumn2, Player4HostColumn2 }[index];
+            Grid iconGrid = new Grid[4] { Player1IconColumnGrid, Player2IconColumnGrid, Player3IconColumnGrid, Player4IconColumnGrid }[index];
+            PackIcon icon = new PackIcon[4] { Player1Icon, Player2Icon, Player3Icon, Player4Icon }[index];
+            TextBox usernameTextBox = new TextBox[4] { Player1UsernameTextBox, Player2UsernameTextBox, Player3UsernameTextBox, Player4UsernameTextBox }[index];
+            TextBox steamIdTextBox = new TextBox[4] { Player1SteamIdTextBox, Player2SteamIdTextBox, Player3SteamIdTextBox, Player4SteamIdTextBox }[index];
+
+            bool hasIcon = playerType == PlayerType.Host;
+            int width = hasIcon ? 30 : 8;
+            GridLength gridLength = new GridLength(width, GridUnitType.Pixel);
+            Visibility iconVisibility = hasIcon ? Visibility.Visible : Visibility.Hidden;
+            Visibility usernameVisibility = username == string.Empty ? Visibility.Hidden : Visibility.Visible;
+            Visibility steamIdVisibility = steamId == string.Empty ? Visibility.Hidden : Visibility.Visible;
+
+            this.Dispatcher.Invoke(() =>
+            {
+                column1.Width = gridLength;
+                column2.Width = gridLength;
+                iconGrid.Visibility = iconVisibility;
+                icon.Kind = PackIconKind.Crown;
+                usernameTextBox.Text = username;
+                usernameTextBox.Visibility = usernameVisibility;
+                steamIdTextBox.Text = steamId;
+                steamIdTextBox.Visibility = steamIdVisibility;
+            });
         }
         #endregion
 
         #region Window - Discord Rich Presence Preview
-        public void SetDiscordRichPresencePreviewIsEnabled(bool isEnabled)
+        public void SetDiscordRichPresencePreviewUIState(bool isEnabled)
         {
             if (isEnabled)
             {
@@ -433,16 +478,16 @@ namespace PhasmophobiaDiscordRPC
             }
         }
         
-        public void SetDiscordRichPresencePreview(string image, string details, string state, DateTime dateTime)
+        public void SetDiscordRichPresencePreviewUI(string imageKey, string details, string state, DateTime dateTime)
         {
-            SetDiscordRichPresencePreviewIsEnabled(true);
+            SetDiscordRichPresencePreviewUIState(true);
 
             Visibility detailsVisibility = details == string.Empty ? Visibility.Collapsed : Visibility.Visible;
             Visibility stateVisibility = state == string.Empty ? Visibility.Collapsed : Visibility.Visible;
 
             this.Dispatcher.Invoke(() =>
             {
-                var bitmap = new BitmapImage(new Uri($"pack://application:,,,/img/{image}.png", UriKind.Absolute));
+                var bitmap = new BitmapImage(new Uri($"pack://application:,,,/img/{imageKey}.png", UriKind.Absolute));
                 Resources["PreviewImage"] = bitmap;
 
                 DiscordRichPresencePreviewDetails.Text = details;
@@ -454,8 +499,47 @@ namespace PhasmophobiaDiscordRPC
                 DiscordRichPresencePreviewElapsed.Text = "00:00 elapsed";
             });
         }
+
+        private void DiscordRichPresenceTick()
+        {
+            UpdateDiscordRichPresenceElapsedUI();
+        }
+
+        private void UpdateDiscordRichPresenceElapsedUI()
+        {
+            DateTime startDateTime = GameStateManager.Instance.GameState.StartDateTime;
+            string elapsed = GetElapsedTimeString(startDateTime);
+
+            this.Dispatcher.Invoke(() =>
+            {
+                DiscordRichPresencePreviewElapsed.Text = elapsed;
+            });
+        }
+
+        private string GetElapsedTimeString(DateTime startDateTime)
+        {
+            TimeSpan elapsed = DateTime.UtcNow - startDateTime;
+
+            return FormatElapsedTime(elapsed);
+        }
+
+        private string FormatElapsedTime(TimeSpan elapsed)
+        {
+            if (elapsed.TotalDays >= 1)
+            {
+                return $"{((int)elapsed.TotalDays).ToString("00")}:{elapsed.Hours.ToString("00")}:{elapsed.Minutes.ToString("00")}:{elapsed.Seconds.ToString("00")} elapsed";
+            }
+            else if (elapsed.TotalHours >= 1)
+            {
+                return $"{((int)elapsed.TotalHours).ToString("00")}:{elapsed.Minutes.ToString("00")}:{elapsed.Seconds.ToString("00")} elapsed";
+            }
+            else
+            {
+                return $"{((int)elapsed.TotalMinutes).ToString("00")}:{elapsed.Seconds.ToString("00")} elapsed";
+            }
+        }
         #endregion
-        
+
         private Brush GetBrushFromHex(string hex)
         {
             Color color = (Color)ColorConverter.ConvertFromString(hex);

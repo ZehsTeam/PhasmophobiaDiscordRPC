@@ -29,6 +29,7 @@ C:\Users\<User>\AppData\LocalLow\Kinetic Games\Phasmophobia\Player.log
 
 #### Optional
 - Show lobby code in a private game
+  - Shows server region
 - Change max player count
 
 ## App settings you can change

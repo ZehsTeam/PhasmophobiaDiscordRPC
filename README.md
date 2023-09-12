@@ -12,7 +12,7 @@ Made using WPF in .NET 7
 
 ## Game state detection
 
-Uses **Player.log** to detect the current game state.
+It uses **Player.log** to detect the current game state.
 ```
 C:\Users\<User>\AppData\LocalLow\Kinetic Games\Phasmophobia\Player.log
 ```
@@ -21,14 +21,14 @@ C:\Users\<User>\AppData\LocalLow\Kinetic Games\Phasmophobia\Player.log
 
 - Shows server mode (Singleplayer / Multiplayer)
 - Shows player state (Initializing, Main Menu, Lobby, In Match)
-- Shows map info (Map icon & Map name)
+- Shows map info (Map Icon & Map Name)
 - Shows difficulty
 - Shows player count
 - Shows elapsed time in each player state
-- View player list and steam id
+- View player list (Username & SteamID)
 
 #### Optional
-- Show lobby code in private game
+- Show lobby code in a private game
 - Change max player count
 
 ## App settings you can change

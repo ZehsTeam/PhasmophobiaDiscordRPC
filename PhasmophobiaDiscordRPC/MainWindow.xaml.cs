@@ -115,6 +115,8 @@ namespace PhasmophobiaDiscordRPC
 
         private void MainTick(object source, ElapsedEventArgs e)
         {
+            GameStateManager.Instance.Tick();
+
             if (GameStateManager.Instance.GetPhasmophobiaAppState() != PhasmophobiaAppState.Open) return;
 
             DiscordRichPresenceTick();
@@ -487,8 +489,7 @@ namespace PhasmophobiaDiscordRPC
 
             this.Dispatcher.Invoke(() =>
             {
-                var bitmap = new BitmapImage(new Uri($"pack://application:,,,/img/{imageKey}.png", UriKind.Absolute));
-                Resources["PreviewImage"] = bitmap;
+                Resources["PreviewImage"] = GetBitmapImageFromImageKey(imageKey);
 
                 DiscordRichPresencePreviewDetails.Text = details;
                 DiscordRichPresencePreviewDetails.Visibility = detailsVisibility;
@@ -498,6 +499,13 @@ namespace PhasmophobiaDiscordRPC
 
                 DiscordRichPresencePreviewElapsed.Text = "00:00 elapsed";
             });
+        }
+
+        private BitmapImage GetBitmapImageFromImageKey(string imageKey)
+        {
+            BitmapImage image = new BitmapImage(new Uri($"pack://application:,,,/img/{imageKey}.png", UriKind.Absolute));
+
+            return image;
         }
 
         private void DiscordRichPresenceTick()

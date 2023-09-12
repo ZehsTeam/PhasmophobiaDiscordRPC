@@ -37,7 +37,7 @@
 
             <!-- Title -->
             <Grid Grid.Column="0" Margin="10,0,0,0" VerticalAlignment="Center">
-                <TextBlock>Phasmophobia Rich Presence v1.0.0</TextBlock>
+                <TextBlock>Phasmophobia Rich Presence v1.0.1</TextBlock>
             </Grid>
             
             <!-- Buttons -->

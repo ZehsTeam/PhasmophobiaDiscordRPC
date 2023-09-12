@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Timers;
 
 namespace PhasmophobiaDiscordRPC
 {
@@ -31,7 +30,6 @@ namespace PhasmophobiaDiscordRPC
         public event Action<PhasmophobiaAppState> OnPhasmophobiaAppStateChanged;
 
         private PhasmophobiaAppState _phasmophobiaAppState;
-        private int _loopInterval = 1000;
 
         public GameStateManager()
         {
@@ -45,8 +43,6 @@ namespace PhasmophobiaDiscordRPC
             _lobbyCode = string.Empty;
 
             _phasmophobiaAppState = PhasmophobiaAppState.None;
-
-            StartLoop();
         }
 
         public void UpdatePresence()
@@ -66,20 +62,12 @@ namespace PhasmophobiaDiscordRPC
             return _phasmophobiaAppState;
         }
 
-        #region Private
-        private void StartLoop()
-        {
-            Timer timer = new Timer();
-            timer.Elapsed += new ElapsedEventHandler(Tick);
-            timer.Interval = _loopInterval;
-            timer.Enabled = true;
-        }
-
-        private void Tick(object source, ElapsedEventArgs e)
+        public void Tick()
         {
             CheckPhasmophobiaAppState();
         }
 
+        #region Private
         private void CheckPhasmophobiaAppState()
         {
             bool isRunning = IsPhasmophobiaRunning();

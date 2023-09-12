@@ -5,7 +5,7 @@
     <TargetFramework>net7.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,8 +25,10 @@
     <Resource Include="img\map-grafton_farmhouse.png" />
     <Resource Include="img\map-maple_lodge_campsite.png" />
     <Resource Include="img\map-prison.png" />
+    <Resource Include="img\map-random.png" />
     <Resource Include="img\map-sunny_meadows.png" />
     <Resource Include="img\map-sunny_meadows_restricted.png" />
     <Resource Include="img\logo.png" />
+    <Resource Include="img\map-training.png" />
   </ItemGroup>
 </Project>

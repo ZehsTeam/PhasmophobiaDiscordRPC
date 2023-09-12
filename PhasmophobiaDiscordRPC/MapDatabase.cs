@@ -86,7 +86,7 @@ namespace PhasmophobiaDiscordRPC
             return resultMap;
         }
     
-        private static Map GetUnknownMap()
+        public static Map GetUnknownMap()
         {
             return new Map(MapType.None, "Unkown", "", "map-random");
         }

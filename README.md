@@ -3,13 +3,13 @@ Display a custom Discord rich presence for Phasmophobia depending on the current
 
 Made using WPF in .NET 7
 
-Libraries in use<be>
+**Libraries in use**<be>
 - [Lachee's DiscordRPC for C#](https://github.com/Lachee/discord-rpc-csharp)<br>
 - [MaterialDesignInXamlToolkit](https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit)
 
 ---
 
-Uses Player.log to detect the current game state.
+Uses **Player.log** to detect the current game state.
 ```
 C:\Users\<User>\AppData\LocalLow\Kinetic Games\Phasmophobia\Player.log
 ```

@@ -350,7 +350,7 @@
                                         <TextBlock Margin="0,1,0,1" Foreground="#F2F3F5" FontWeight="Medium">Phasmophobia</TextBlock>
                                         <TextBlock x:Name="DiscordRichPresencePreviewDetails" Margin="0,1,0,1" Foreground="#F2F3F5">6 Tanglewood Drive - Nightmare</TextBlock>
                                         <TextBlock x:Name="DiscordRichPresencePreviewState" Margin="0,1,0,1" Foreground="#F2F3F5">Party (1 of 4)</TextBlock>
-                                        <TextBlock x:Name="DiscordRichPresencePreviewElapsed" Margin="0,1,0,1" Foreground="#F2F3F5">00:01 elapsed</TextBlock>
+                                        <TextBlock x:Name="DiscordRichPresencePreviewElapsed" Margin="0,1,0,1" Foreground="#F2F3F5">00:00 elapsed</TextBlock>
                                     </StackPanel>
                                 </Grid>
                             </Grid>

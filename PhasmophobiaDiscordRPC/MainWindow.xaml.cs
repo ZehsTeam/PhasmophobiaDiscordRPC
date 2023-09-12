@@ -496,8 +496,6 @@ namespace PhasmophobiaDiscordRPC
 
                 DiscordRichPresencePreviewState.Text = state;
                 DiscordRichPresencePreviewState.Visibility = stateVisibility;
-
-                DiscordRichPresencePreviewElapsed.Text = "00:00 elapsed";
             });
         }
 

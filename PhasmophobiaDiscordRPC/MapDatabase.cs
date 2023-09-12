@@ -42,7 +42,7 @@ namespace PhasmophobiaDiscordRPC
                 new Map(MapType.Prison, "Prison", "Prison", "map-prison"),
                 new Map(MapType.MapleLodgeCampsite, "Maple Lodge Campsite", "MapleLodgeCampsite", "map-maple_lodge_campsite"),
                 new Map(MapType.CampWoodwind, "Camp Woodwind", "CampWoodwind", "map-camp_woodwind"),
-                new Map(MapType.Training, "Training", "TutorialV2", "logo")
+                new Map(MapType.Training, "Training", "TutorialV2", "map-training")
             };
         }
 
@@ -56,12 +56,15 @@ namespace PhasmophobiaDiscordRPC
 
         public static Map GetMapByMapType(MapType mapType)
         {
-            Map resultMap = null;
+            Map resultMap = GetUnknownMap();
 
             foreach (Map map in maps)
             {
-                if (resultMap != null) break;
-                if (map.MapType == mapType) resultMap = map;
+                if (map.MapType == mapType)
+                {
+                    resultMap = map;
+                    break;
+                }
             }
 
             return resultMap;
@@ -69,15 +72,23 @@ namespace PhasmophobiaDiscordRPC
 
         public static Map GetMapByLevelName(string levelName)
         {
-            Map resultMap = null;
+            Map resultMap = GetUnknownMap();
 
             foreach (Map map in maps)
             {
-                if (resultMap != null) break;
-                if (map.LevelName == levelName) resultMap = map;
+                if (map.LevelName == levelName)
+                {
+                    resultMap = map;
+                    break;
+                }
             }
 
             return resultMap;
+        }
+    
+        private static Map GetUnknownMap()
+        {
+            return new Map(MapType.None, "Unkown", "", "map-random");
         }
     }
 }

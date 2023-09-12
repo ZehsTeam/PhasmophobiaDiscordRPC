@@ -24,7 +24,7 @@ C:\Users\<User>\AppData\LocalLow\Kinetic Games\Phasmophobia\Player.log
 - Shows map info (Map Icon & Map Name)
 - Shows difficulty
 - Shows player count
-- Shows elapsed time in each player state
+- Shows elapsed time for each player state
 - View player list (Username & SteamID)
 
 #### Optional

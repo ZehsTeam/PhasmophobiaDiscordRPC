@@ -15,6 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="img\crown-gold.png" />
+    <Resource Include="img\crown-white.png" />
     <Resource Include="img\map-10_ridgeview_court.png" />
     <Resource Include="img\map-13_willow_street.png" />
     <Resource Include="img\map-42_edgefield_road.png" />

@@ -75,7 +75,7 @@
                               HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Border Width="60px" Height="60px" CornerRadius="3,0,0,3">
                                 <Border.Background>
-                                    <ImageBrush Stretch="Fill" ImageSource="./img/logo.png"/>
+                                    <ImageBrush Stretch="Fill" ImageSource="/img/logo.png"/>
                                 </Border.Background>
                             </Border>
                         </Grid>
@@ -208,7 +208,7 @@
                                     </Grid.ColumnDefinitions>
 
                                     <Grid Grid.Column="0" x:Name="Player1IconColumnGrid" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <materialDesign:PackIcon x:Name="Player1Icon" Kind="Crown" Foreground="Gold" />
+                                        <Image Source="/img/crown-gold.png" Width="15px" Height="15px"/>
                                     </Grid>
 
                                     <Grid Grid.Column="1" VerticalAlignment="Center">
@@ -238,7 +238,7 @@
                                     </Grid.ColumnDefinitions>
 
                                     <Grid Grid.Column="0" x:Name="Player2IconColumnGrid" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Hidden">
-                                        <materialDesign:PackIcon x:Name="Player2Icon" Kind="Crown" Foreground="Gold" />
+                                        <Image Source="/img/crown-gold.png" Width="15px" Height="15px"/>
                                     </Grid>
 
                                     <Grid Grid.Column="1" VerticalAlignment="Center">
@@ -268,7 +268,7 @@
                                     </Grid.ColumnDefinitions>
 
                                     <Grid Grid.Column="0" x:Name="Player3IconColumnGrid" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Hidden">
-                                        <materialDesign:PackIcon x:Name="Player3Icon" Kind="Crown" Foreground="Gold" />
+                                        <Image Source="/img/crown-gold.png" Width="15px" Height="15px"/>
                                     </Grid>
 
                                     <Grid Grid.Column="1" VerticalAlignment="Center">
@@ -298,7 +298,7 @@
                                     </Grid.ColumnDefinitions>
 
                                     <Grid Grid.Column="0" x:Name="Player4IconColumnGrid" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Hidden">
-                                        <materialDesign:PackIcon x:Name="Player4Icon" Kind="Crown" Foreground="Gold" />
+                                        <Image Source="/img/crown-gold.png" Width="15px" Height="15px"/>
                                     </Grid>
 
                                     <Grid Grid.Column="1" VerticalAlignment="Center">

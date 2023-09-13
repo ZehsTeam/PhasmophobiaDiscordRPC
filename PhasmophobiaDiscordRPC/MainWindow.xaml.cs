@@ -434,7 +434,6 @@ namespace PhasmophobiaDiscordRPC
             ColumnDefinition column1 = new ColumnDefinition[4] { Player1HostColumn, Player2HostColumn, Player3HostColumn, Player4HostColumn }[index];
             ColumnDefinition column2 = new ColumnDefinition[4] { Player1HostColumn2, Player2HostColumn2, Player3HostColumn2, Player4HostColumn2 }[index];
             Grid iconGrid = new Grid[4] { Player1IconColumnGrid, Player2IconColumnGrid, Player3IconColumnGrid, Player4IconColumnGrid }[index];
-            PackIcon icon = new PackIcon[4] { Player1Icon, Player2Icon, Player3Icon, Player4Icon }[index];
             TextBox usernameTextBox = new TextBox[4] { Player1UsernameTextBox, Player2UsernameTextBox, Player3UsernameTextBox, Player4UsernameTextBox }[index];
             TextBox steamIdTextBox = new TextBox[4] { Player1SteamIdTextBox, Player2SteamIdTextBox, Player3SteamIdTextBox, Player4SteamIdTextBox }[index];
 
@@ -450,7 +449,6 @@ namespace PhasmophobiaDiscordRPC
                 column1.Width = gridLength;
                 column2.Width = gridLength;
                 iconGrid.Visibility = iconVisibility;
-                icon.Kind = PackIconKind.Crown;
                 usernameTextBox.Text = username;
                 usernameTextBox.Visibility = usernameVisibility;
                 steamIdTextBox.Text = steamId;

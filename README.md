@@ -8,7 +8,10 @@ Made using WPF in .NET 7
 - [MaterialDesignInXamlToolkit](https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit)
 
 ## Download
-[Latest Release](https://github.com/ZehsTeam/PhasmophobiaDiscordRPC/releases)
+Download the [Latest Release](https://github.com/ZehsTeam/PhasmophobiaDiscordRPC/releases)
+
+#### Requires
+- [Phasmophobia](https://store.steampowered.com/app/739630/Phasmophobia/)
 
 ## Game state detection
 

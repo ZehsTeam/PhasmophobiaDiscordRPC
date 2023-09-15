@@ -1,178 +1,264 @@
-﻿<Window x:Class="PhasmophobiaDiscordRPC.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PhasmophobiaDiscordRPC"
-        mc:Ignorable="d"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        TextElement.Foreground="White"
-        TextElement.FontWeight="Regular"
-        TextElement.FontSize="12"
-        TextOptions.TextFormattingMode="Ideal"
-        TextOptions.TextRenderingMode="Auto"
-        FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="Phasmophobia Rich Presence" Height="600" Width="400"
-        WindowStyle="None"  ResizeMode="CanResize" Topmost="True" Foreground="White"
-        Closed="Window_Closed">
+﻿<Window
+    x:Class="PhasmophobiaDiscordRPC.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:PhasmophobiaDiscordRPC"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Phasmophobia Rich Presence"
+    Width="400"
+    Height="600"
+    Closed="Window_Closed"
+    ResizeMode="CanResize"
+    Style="{StaticResource MaterialDesignWindow}"
+    Topmost="True"
+    WindowStyle="None"
+    mc:Ignorable="d">
     <WindowChrome.WindowChrome>
-        <WindowChrome ResizeBorderThickness="0" CaptionHeight="0"/>
+        <WindowChrome CaptionHeight="0" ResizeBorderThickness="0" />
     </WindowChrome.WindowChrome>
-    <Grid Background="#36393e">
+    <Grid Background="{StaticResource Background}">
         <Grid.Effect>
-            <DropShadowEffect BlurRadius="15" Direction="-90" RenderingBias="Quality" ShadowDepth="2"/>
+            <DropShadowEffect
+                BlurRadius="15"
+                Direction="-90"
+                RenderingBias="Quality"
+                ShadowDepth="2" />
         </Grid.Effect>
-        
+
         <Grid.RowDefinitions>
-            <RowDefinition Height="30px"/>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="30px" />
+            <RowDefinition Height="auto" />
+            <RowDefinition />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
-        <!-- Window Topbar -->
-        <Grid Grid.Row="0" Background="#1e2124" MouseLeftButtonDown="TopBar_MouseLeftButtonDown">
+        <!--  Topbar  -->
+        <Grid
+            Grid.Row="0"
+            Background="{StaticResource Background3}"
+            MouseLeftButtonDown="TopBar_MouseLeftButtonDown">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="80px"/>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
 
-            <!-- Title -->
-            <Grid Grid.Column="0" Margin="10,0,0,0" VerticalAlignment="Center">
-                <TextBlock>Phasmophobia Rich Presence v1.0.1</TextBlock>
+            <!--  Title  -->
+            <Grid
+                Grid.Column="0"
+                Margin="10,0,0,0"
+                VerticalAlignment="Center">
+                <TextBlock Text="Phasmophobia Rich Presence v1.0.1" />
             </Grid>
-            
-            <!-- Buttons -->
-            <Grid Grid.Column="1">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button x:Name="windowMinimizeBtn" Padding="0" Width="40px" Height="30px" Background="{x:Null}" BorderBrush="{x:Null}" Click="windowMinimizeBtn_Click">
-                        <materialDesign:PackIcon Kind="Minus" Foreground="White"/>
-                    </Button>
-                    <Button x:Name="windowCloseBtn" Padding="0" Width="40px" Height="30px" Background="{x:Null}" BorderBrush="{x:Null}" Click="windowCloseBtn_Click">
-                        <materialDesign:PackIcon Kind="WindowClose" Foreground="White"/>
-                    </Button>
+
+            <!--  Buttons  -->
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <Button
+                    x:Name="windowMinimizeBtn"
+                    Width="40px"
+                    Height="30px"
+                    Padding="0"
+                    Background="{x:Null}"
+                    BorderBrush="{x:Null}"
+                    Click="windowMinimizeBtn_Click">
+                    <materialDesign:PackIcon
+                        Width="15"
+                        Height="15"
+                        Foreground="{StaticResource Foreground}"
+                        Kind="Minus" />
+                </Button>
+                <Button
+                    x:Name="windowCloseBtn"
+                    Width="40px"
+                    Height="30px"
+                    Padding="0"
+                    Background="{x:Null}"
+                    BorderBrush="{x:Null}"
+                    Click="windowCloseBtn_Click">
+                    <materialDesign:PackIcon
+                        Width="15"
+                        Height="15"
+                        Foreground="{StaticResource Foreground}"
+                        Kind="Close" />
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <!--  Phasmophobia App State  -->
+        <Border
+            Grid.Row="1"
+            Height="60"
+            Margin="10,10,10,5"
+            Style="{DynamicResource BorderDefault}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="60px" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <!--  Phasmophobia Logo  -->
+                <Grid Grid.Column="0">
+                    <Border
+                        Width="60"
+                        Height="60"
+                        CornerRadius="3">
+                        <Border.Background>
+                            <ImageBrush ImageSource="/img/logo.png" />
+                        </Border.Background>
+                    </Border>
+                </Grid>
+
+                <!--  Phasmophobia Title / Status  -->
+                <StackPanel
+                    Grid.Column="1"
+                    Margin="10,0,0,0"
+                    Orientation="Vertical">
+                    <TextBlock
+                        Margin="0,10,0,0"
+                        FontWeight="Medium"
+                        Text="Phasmophobia" />
+                    <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
+                        <TextBlock Foreground="{StaticResource Foreground2}" Text="Status:" />
+                        <TextBlock
+                            x:Name="PhasmophobiaAppStatusTextBlock"
+                            Margin="5,0,0,0"
+                            FontWeight="Medium"
+                            Foreground="#F44336"
+                            Text="Offline" />
+                    </StackPanel>
                 </StackPanel>
             </Grid>
-        </Grid>
-        
-        <!-- Window Content -->
-        <Grid Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="80px"/>
-                <RowDefinition/>
-                <RowDefinition Height="140px"/>
-            </Grid.RowDefinitions>
-            
-            <!-- Phasmophobia App Status -->
-            <Grid Grid.Row="0" Margin="10">
-                <Border Background="#282b30" CornerRadius="3">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="60px"/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
+        </Border>
 
-                        <!-- Phasmophobia Logo -->
-                        <Grid Grid.Column="0"
-                              HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <Border Width="60px" Height="60px" CornerRadius="3,0,0,3">
-                                <Border.Background>
-                                    <ImageBrush Stretch="Fill" ImageSource="/img/logo.png"/>
-                                </Border.Background>
-                            </Border>
-                        </Grid>
-
-                        <!-- Phasmophobia Title / Status -->
-                        <Grid Grid.Column="1">
-                            <StackPanel Orientation="Vertical" Margin="10,0,0,0">
-                                <TextBlock Margin="0,10,0,0" Foreground="#F2F3F5" FontWeight="Medium">Phasmophobia</TextBlock>
-                                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                                    <TextBlock Foreground="#949BA4">Status:</TextBlock>
-                                    <TextBlock x:Name="PhasmophobiaAppStatusTextBlock" Margin="5,0,0,0" Foreground="#F44336" FontWeight="Medium">Offline</TextBlock>
-                                </StackPanel>
-                            </StackPanel>
-                        </Grid>
-                    </Grid>
-                </Border>
-            </Grid>
-
-            <!-- Settings -->
-            <Grid Grid.Row="1" Margin="10">
+        <!--  Settings  -->
+        <Grid Grid.Row="2" Margin="10,5,10,5">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <StackPanel Orientation="Vertical">
-                    <!-- Lobby Type -->
+                    <!--  Lobby Type  -->
                     <StackPanel Orientation="Vertical" Visibility="Visible">
-                        <TextBlock FontSize="10" Foreground="#B5BAC1" FontWeight="Bold" Margin="0,0,0,5">LOBBY TYPE</TextBlock>
-                        <Border x:Name="LobbyTypeBorder" Background="#1e2124" CornerRadius="3" Margin="0,0,0,10" Cursor="Arrow">
-                            <ComboBox x:Name="LobbyTypeComboBox" SelectionChanged="LobbyTypeComboBox_SelectionChanged" IsEnabled="True" Height="30px" Padding="8,5,10,5" BorderBrush="White" Foreground="#F2F3F5" materialDesign:TextFieldAssist.DecorationVisibility="Hidden" BorderThickness="0">
-                                <ComboBoxItem Content="Public" Foreground="Black"/>
-                                <ComboBoxItem Content="Private" Foreground="Black"/>
+                        <TextBlock
+                            Margin="0,0,0,5"
+                            Style="{DynamicResource TextBlockLabel}"
+                            Text="LOBBY TYPE" />
+                        <Border
+                            x:Name="LobbyTypeBorder"
+                            Margin="0,0,0,10"
+                            Style="{DynamicResource BorderDark}">
+                            <ComboBox
+                                x:Name="LobbyTypeComboBox"
+                                Height="30"
+                                IsEnabled="True"
+                                SelectionChanged="LobbyTypeComboBox_SelectionChanged"
+                                Style="{DynamicResource ComboBoxDefault}">
+                                <ComboBoxItem Content="Public" />
+                                <ComboBoxItem Content="Private" />
                             </ComboBox>
                         </Border>
                     </StackPanel>
 
-                    <!-- Lobby Code -->
+                    <!--  Lobby Code  -->
                     <StackPanel Orientation="Vertical" Visibility="Visible">
-                        <TextBlock FontSize="10" Foreground="#B5BAC1" FontWeight="Bold" Margin="0,0,0,5">LOBBY CODE</TextBlock>
-                        <Border x:Name="LobbyCodeBorder" Background="#1e2124" CornerRadius="3" Margin="0,0,0,10" Cursor="Arrow">
-                            <Grid x:Name="LobbyTypeGrid" Height="30px" IsEnabled="True">
+                        <TextBlock
+                            Margin="0,0,0,5"
+                            Style="{DynamicResource TextBlockLabel}"
+                            Text="LOBBY CODE" />
+                        <Border
+                            x:Name="LobbyCodeBorder"
+                            Margin="0,0,0,10"
+                            Style="{DynamicResource BorderDark}">
+                            <Grid
+                                x:Name="LobbyTypeGrid"
+                                Height="30"
+                                IsEnabled="True">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="38px"/>
-                                    <ColumnDefinition Width="1*"/>
-                                    <ColumnDefinition Width="60px"/>
+                                    <ColumnDefinition Width="38px" />
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="60px" />
                                 </Grid.ColumnDefinitions>
 
-                                <Grid Grid.Column="0" Margin="8,5,0,5" VerticalAlignment="Center">
-                                    <TextBlock x:Name="LobbyRegionTextBlock" Foreground="#F2F3F5" Text="##  —" IsEnabled="True">
-                                        <TextBlock.Style>
-                                            <Style TargetType="{x:Type TextBlock}">
-                                                <Style.Triggers>
-                                                    <Trigger Property="IsEnabled" Value="True">
-                                                        <Setter Property="Opacity" Value="1"/>
-                                                    </Trigger>
-                                                    <Trigger Property="IsEnabled" Value="False">
-                                                        <Setter Property="Opacity" Value="0.38"/>
-                                                    </Trigger>    
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
+                                <Grid
+                                    Grid.Column="0"
+                                    Margin="8,5,0,5"
+                                    VerticalAlignment="Center">
+                                    <TextBlock
+                                        x:Name="LobbyRegionTextBlock"
+                                        IsEnabled="True"
+                                        Text="##  —" />
                                 </Grid>
 
                                 <Grid Grid.Column="1" Margin="5,5,0,5">
-                                    <TextBox x:Name="LobbyCodeTextBox"
-                                        PreviewTextInput="LobbyCodeTextBox_PreviewTextInput" TextChanged="LobbyCodeTextBox_TextChanged" DataObject.Pasting="LobbyCodeTextBox_Pasting"
-                                        MaxLength="6" materialDesign:HintAssist.Hint="######"
-                                        Height="20px" FontSize="12" Padding="0" VerticalContentAlignment="Center" 
-                                        Foreground="#F2F3F5" CaretBrush="White"
-                                        materialDesign:TextFieldAssist.DecorationVisibility="Hidden" materialDesign:TextFieldAssist.CharacterCounterVisibility="Collapsed"
-                                        BorderThickness="0"/>
+                                    <TextBox
+                                        x:Name="LobbyCodeTextBox"
+                                        Height="20px"
+                                        materialDesign:HintAssist.Hint="######"
+                                        DataObject.Pasting="LobbyCodeTextBox_Pasting"
+                                        MaxLength="6"
+                                        PreviewTextInput="LobbyCodeTextBox_PreviewTextInput"
+                                        Style="{DynamicResource TextBoxDefault}"
+                                        TextChanged="LobbyCodeTextBox_TextChanged" />
                                 </Grid>
 
                                 <Grid Grid.Column="2">
                                     <StackPanel Orientation="Horizontal">
-                                        <Button x:Name="LobbyCodeCancelButton" Click="LobbyCodeCancelButton_Click" Padding="0" Width="30px" Height="30px" Background="{x:Null}" BorderBrush="{x:Null}">
-                                            <materialDesign:PackIcon Kind="WindowClose" Foreground="#F2F3F5"/>
+                                        <Button
+                                            x:Name="LobbyCodeCancelButton"
+                                            Width="30px"
+                                            Height="30px"
+                                            Padding="0"
+                                            Background="{x:Null}"
+                                            BorderBrush="{x:Null}"
+                                            Click="LobbyCodeCancelButton_Click">
+                                            <materialDesign:PackIcon
+                                                Width="15"
+                                                Height="15"
+                                                Foreground="{StaticResource Foreground}"
+                                                Kind="WindowClose" />
                                         </Button>
-                                        <Button x:Name="LobbyCodeConfirmButton" Click="LobbyCodeConfirmButton_Click" Padding="0" Width="30px" Height="30px" Background="{x:Null}" BorderBrush="{x:Null}">
-                                            <materialDesign:PackIcon Kind="Check" Foreground="#F2F3F5"/>
+                                        <Button
+                                            x:Name="LobbyCodeConfirmButton"
+                                            Width="30px"
+                                            Height="30px"
+                                            Padding="0"
+                                            Background="{x:Null}"
+                                            BorderBrush="{x:Null}"
+                                            Click="LobbyCodeConfirmButton_Click">
+                                            <materialDesign:PackIcon
+                                                Width="15"
+                                                Height="15"
+                                                Foreground="{StaticResource Foreground}"
+                                                Kind="Check" />
                                         </Button>
                                     </StackPanel>
                                 </Grid>
                             </Grid>
                         </Border>
                     </StackPanel>
-                    
-                    <!-- Max Players -->
+
+                    <!--  Max Players  -->
                     <StackPanel Orientation="Vertical" Visibility="Visible">
-                        <TextBlock FontSize="10" Foreground="#B5BAC1" FontWeight="Bold" Margin="0,0,0,5">MAX PLAYERS</TextBlock>
-                        <Border x:Name="MaxPlayersBorder" Background="#1e2124" CornerRadius="3" Margin="0,0,0,10" Cursor="Arrow">
-                            <ComboBox x:Name="MaxPlayersComboBox" SelectionChanged="MaxPlayersComboBox_SelectionChanged"  IsEnabled="True" Height="30px" Padding="8,5,10,5" BorderBrush="White" Foreground="#F2F3F5" materialDesign:TextFieldAssist.DecorationVisibility="Hidden" BorderThickness="0">
-                                <ComboBoxItem Content="4" Foreground="Black"/>
-                                <ComboBoxItem Content="3" Foreground="Black"/>
-                                <ComboBoxItem Content="2" Foreground="Black"/>
+                        <TextBlock
+                            Margin="0,0,0,5"
+                            Style="{DynamicResource TextBlockLabel}"
+                            Text="MAX PLAYERS" />
+                        <Border
+                            x:Name="MaxPlayersBorder"
+                            Margin="0,0,0,10"
+                            Style="{DynamicResource BorderDark}">
+                            <ComboBox
+                                x:Name="MaxPlayersComboBox"
+                                Height="30"
+                                IsEnabled="True"
+                                SelectionChanged="MaxPlayersComboBox_SelectionChanged"
+                                Style="{DynamicResource ComboBoxDefault}">
+                                <ComboBoxItem Content="4" />
+                                <ComboBoxItem Content="3" />
+                                <ComboBoxItem Content="2" />
                             </ComboBox>
                         </Border>
                     </StackPanel>
-                    
-                    <!-- Players -->
+
+                    <!--  Players  -->
                     <StackPanel Orientation="Vertical" Visibility="Visible">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -180,187 +266,272 @@
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
 
-                            <Grid Grid.Column="0">
-                                <TextBlock FontSize="10" Foreground="#B5BAC1" FontWeight="Bold" Margin="0,0,0,5">PLAYERS</TextBlock>
-                            </Grid>
-
-                            <Grid Grid.Column="1">
-                                <TextBlock FontSize="10" Foreground="#B5BAC1" FontWeight="Bold" Margin="0,0,0,5">STEAM ID</TextBlock>
-                            </Grid>
+                            <TextBlock
+                                Grid.Column="0"
+                                Margin="0,0,0,5"
+                                Style="{DynamicResource TextBlockLabel}"
+                                Text="PLAYERS" />
+                            <TextBlock
+                                Grid.Column="1"
+                                Margin="0,0,0,5"
+                                Style="{DynamicResource TextBlockLabel}"
+                                Text="STEAM ID" />
                         </Grid>
 
-                        <Border x:Name="PlayerListBorder" Height="120px" Background="#282b30" CornerRadius="3" Margin="0,0,0,10" Cursor="Arrow">
+                        <Border
+                            x:Name="PlayerListBorder"
+                            Height="120"
+                            Style="{DynamicResource BorderDefault}">
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="30px"/>
-                                    <RowDefinition Height="30px"/>
-                                    <RowDefinition Height="30px"/>
-                                    <RowDefinition Height="30px"/>
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="30" />
                                 </Grid.RowDefinitions>
 
-                                <!-- Player 1 -->
+                                <!--  Player 1  -->
                                 <Grid Grid.Row="0">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="30px" x:Name="Player1HostColumn"/>
-                                        <ColumnDefinition Width="1*"/>
-                                        <ColumnDefinition Width="1*"/>
-                                        <ColumnDefinition Width="30px" x:Name="Player1HostColumn2"/>
+                                        <ColumnDefinition x:Name="Player1HostColumn" Width="30px" />
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition x:Name="Player1HostColumn2" Width="30px" />
                                     </Grid.ColumnDefinitions>
 
-                                    <Grid Grid.Column="0" x:Name="Player1IconColumnGrid" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <Image Source="/img/crown-gold.png" Width="15px" Height="15px"/>
+                                    <Grid
+                                        x:Name="Player1IconColumnGrid"
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center">
+                                        <Image
+                                            Width="15px"
+                                            Height="15px"
+                                            Source="/img/crown-gold.png" />
                                     </Grid>
 
                                     <Grid Grid.Column="1" VerticalAlignment="Center">
-                                        <TextBox x:Name="Player1UsernameTextBox" Text="Player 1" IsReadOnly="True"
-                                            Height="30px" FontSize="12" Padding="0" VerticalContentAlignment="Center" 
-                                            Foreground="#F2F3F5" CaretBrush="White"
-                                            materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
-                                            BorderThickness="0"/>
+                                        <TextBox
+                                            x:Name="Player1UsernameTextBox"
+                                            Height="30px"
+                                            IsReadOnly="True"
+                                            Style="{DynamicResource TextBoxDefault}"
+                                            Text="Player 1" />
                                     </Grid>
 
                                     <Grid Grid.Column="2">
-                                        <TextBox x:Name="Player1SteamIdTextBox" Text="#################" IsReadOnly="True"
-                                            Height="30px" FontSize="12" Padding="0" VerticalContentAlignment="Center" 
-                                            Foreground="#F2F3F5" CaretBrush="White"
-                                            materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
-                                            BorderThickness="0"/>
+                                        <TextBox
+                                            x:Name="Player1SteamIdTextBox"
+                                            Height="30px"
+                                            IsReadOnly="True"
+                                            Style="{DynamicResource TextBoxDefault}"
+                                            Text="#################" />
                                     </Grid>
                                 </Grid>
 
-                                <!-- Player 2 -->
+                                <!--  Player 2  -->
                                 <Grid Grid.Row="1">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="8px" x:Name="Player2HostColumn"/>
-                                        <ColumnDefinition Width="1*"/>
-                                        <ColumnDefinition Width="1*"/>
-                                        <ColumnDefinition Width="8px" x:Name="Player2HostColumn2"/>
+                                        <ColumnDefinition x:Name="Player2HostColumn" Width="8px" />
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition x:Name="Player2HostColumn2" Width="8px" />
                                     </Grid.ColumnDefinitions>
 
-                                    <Grid Grid.Column="0" x:Name="Player2IconColumnGrid" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Hidden">
-                                        <Image Source="/img/crown-gold.png" Width="15px" Height="15px"/>
+                                    <Grid
+                                        x:Name="Player2IconColumnGrid"
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Visibility="Hidden">
+                                        <Image
+                                            Width="15px"
+                                            Height="15px"
+                                            Source="/img/crown-gold.png" />
                                     </Grid>
 
                                     <Grid Grid.Column="1" VerticalAlignment="Center">
-                                        <TextBox x:Name="Player2UsernameTextBox" Text="Player 2" IsReadOnly="True"
-                                            Height="30px" FontSize="12" Padding="0" VerticalContentAlignment="Center" 
-                                            Foreground="#F2F3F5" CaretBrush="White"
-                                            materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
-                                            BorderThickness="0"/>
+                                        <TextBox
+                                            x:Name="Player2UsernameTextBox"
+                                            Height="30px"
+                                            IsReadOnly="True"
+                                            Style="{DynamicResource TextBoxDefault}"
+                                            Text="Player 2" />
                                     </Grid>
 
                                     <Grid Grid.Column="2">
-                                        <TextBox x:Name="Player2SteamIdTextBox" Text="#################" IsReadOnly="True"
-                                            Height="30px" FontSize="12" Padding="0" VerticalContentAlignment="Center" 
-                                            Foreground="#F2F3F5" CaretBrush="White"
-                                            materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
-                                            BorderThickness="0"/>
+                                        <TextBox
+                                            x:Name="Player2SteamIdTextBox"
+                                            Height="30px"
+                                            IsReadOnly="True"
+                                            Style="{DynamicResource TextBoxDefault}"
+                                            Text="#################" />
                                     </Grid>
                                 </Grid>
 
-                                <!-- Player 3 -->
+                                <!--  Player 3  -->
                                 <Grid Grid.Row="2">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="8px" x:Name="Player3HostColumn"/>
-                                        <ColumnDefinition Width="1*"/>
-                                        <ColumnDefinition Width="1*"/>
-                                        <ColumnDefinition Width="8px" x:Name="Player3HostColumn2"/>
+                                        <ColumnDefinition x:Name="Player3HostColumn" Width="8px" />
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition x:Name="Player3HostColumn2" Width="8px" />
                                     </Grid.ColumnDefinitions>
 
-                                    <Grid Grid.Column="0" x:Name="Player3IconColumnGrid" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Hidden">
-                                        <Image Source="/img/crown-gold.png" Width="15px" Height="15px"/>
+                                    <Grid
+                                        x:Name="Player3IconColumnGrid"
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Visibility="Hidden">
+                                        <Image
+                                            Width="15px"
+                                            Height="15px"
+                                            Source="/img/crown-gold.png" />
                                     </Grid>
 
                                     <Grid Grid.Column="1" VerticalAlignment="Center">
-                                        <TextBox x:Name="Player3UsernameTextBox" Text="Player 3" IsReadOnly="True"
-                                            Height="30px" FontSize="12" Padding="0" VerticalContentAlignment="Center" 
-                                            Foreground="#F2F3F5" CaretBrush="White"
-                                            materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
-                                            BorderThickness="0"/>
+                                        <TextBox
+                                            x:Name="Player3UsernameTextBox"
+                                            Height="30px"
+                                            IsReadOnly="True"
+                                            Style="{DynamicResource TextBoxDefault}"
+                                            Text="Player 3" />
                                     </Grid>
 
                                     <Grid Grid.Column="2">
-                                        <TextBox x:Name="Player3SteamIdTextBox" Text="#################" IsReadOnly="True"
-                                            Height="30px" FontSize="12" Padding="0" VerticalContentAlignment="Center" 
-                                            Foreground="#F2F3F5" CaretBrush="White"
-                                            materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
-                                            BorderThickness="0"/>
+                                        <TextBox
+                                            x:Name="Player3SteamIdTextBox"
+                                            Height="30px"
+                                            IsReadOnly="True"
+                                            Style="{DynamicResource TextBoxDefault}"
+                                            Text="#################" />
                                     </Grid>
                                 </Grid>
 
-                                <!-- Player 4 -->
+                                <!--  Player 4  -->
                                 <Grid Grid.Row="3">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="8px" x:Name="Player4HostColumn"/>
-                                        <ColumnDefinition Width="1*"/>
-                                        <ColumnDefinition Width="1*"/>
-                                        <ColumnDefinition Width="8px" x:Name="Player4HostColumn2"/>
+                                        <ColumnDefinition x:Name="Player4HostColumn" Width="8px" />
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition x:Name="Player4HostColumn2" Width="8px" />
                                     </Grid.ColumnDefinitions>
 
-                                    <Grid Grid.Column="0" x:Name="Player4IconColumnGrid" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Hidden">
-                                        <Image Source="/img/crown-gold.png" Width="15px" Height="15px"/>
+                                    <Grid
+                                        x:Name="Player4IconColumnGrid"
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Visibility="Hidden">
+                                        <Image
+                                            Width="15px"
+                                            Height="15px"
+                                            Source="/img/crown-gold.png" />
                                     </Grid>
 
                                     <Grid Grid.Column="1" VerticalAlignment="Center">
-                                        <TextBox x:Name="Player4UsernameTextBox" Text="Player 4" IsReadOnly="True"
-                                            Height="30px" FontSize="12" Padding="0" VerticalContentAlignment="Center" 
-                                            Foreground="#F2F3F5" CaretBrush="White"
-                                            materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
-                                            BorderThickness="0"/>
+                                        <TextBox
+                                            x:Name="Player4UsernameTextBox"
+                                            Height="30px"
+                                            IsReadOnly="True"
+                                            Style="{DynamicResource TextBoxDefault}"
+                                            Text="Player 4" />
                                     </Grid>
 
                                     <Grid Grid.Column="2">
-                                        <TextBox x:Name="Player4SteamIdTextBox" Text="#################" IsReadOnly="True"
-                                            Height="30px" FontSize="12" Padding="0" VerticalContentAlignment="Center" 
-                                            Foreground="#F2F3F5" CaretBrush="White"
-                                            materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
-                                            BorderThickness="0"/>
+                                        <TextBox
+                                            x:Name="Player4SteamIdTextBox"
+                                            Height="30px"
+                                            IsReadOnly="True"
+                                            Style="{DynamicResource TextBoxDefault}"
+                                            Text="#################" />
                                     </Grid>
                                 </Grid>
                             </Grid>
                         </Border>
                     </StackPanel>
                 </StackPanel>
-            </Grid>
+            </ScrollViewer>
+        </Grid>
 
-            <!-- Discord Rich Presence Preview -->
-            <Grid Grid.Row="2" Margin="10">
-                <StackPanel Orientation="Vertical" VerticalAlignment="Bottom">
-                    <TextBlock FontSize="10" Foreground="#B5BAC1" FontWeight="Bold" Margin="0,0,0,5">DISCORD RICH PRESENCE PREVIEW</TextBlock>
-                    <Border Height="100px" Background="#282b30" CornerRadius="3">
-                        <Grid> <!-- Main -->
-                            <Grid x:Name="DiscordRichPresencePreviewOnline" Visibility="Visible"> <!-- Status Online -->
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="100px"/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
+        <!--  Discord Presence Preview  -->
+        <Grid Grid.Row="3" Margin="10,5,10,10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
 
-                                <!-- Phasmophobia RP Preview Images -->
-                                <Grid Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <Border Width="80px" Height="80px" CornerRadius="8">
-                                        <Border.Background>
-                                            <ImageBrush x:Name="DiscordRichPresencePreviewImage" Stretch="Fill" ImageSource="{DynamicResource PreviewImage}"/>
-                                        </Border.Background>
-                                    </Border>
-                                </Grid>
+            <!--  Label  -->
+            <TextBlock
+                Grid.Row="0"
+                Margin="0,0,0,5"
+                Style="{DynamicResource TextBlockLabel}"
+                Text="DISCORD RICH PRESENCE PREVIEW" />
 
-                                <!-- Phasmophobia RP Preview Info -->
-                                <Grid Grid.Column="1">
-                                    <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                                        <TextBlock Margin="0,1,0,1" Foreground="#F2F3F5" FontWeight="Medium">Phasmophobia</TextBlock>
-                                        <TextBlock x:Name="DiscordRichPresencePreviewDetails" Margin="0,1,0,1" Foreground="#F2F3F5">6 Tanglewood Drive - Nightmare</TextBlock>
-                                        <TextBlock x:Name="DiscordRichPresencePreviewState" Margin="0,1,0,1" Foreground="#F2F3F5">Party (1 of 4)</TextBlock>
-                                        <TextBlock x:Name="DiscordRichPresencePreviewElapsed" Margin="0,1,0,1" Foreground="#F2F3F5">00:00 elapsed</TextBlock>
-                                    </StackPanel>
-                                </Grid>
-                            </Grid>
-                            <Grid x:Name="DiscordRichPresencePreviewOffline" Visibility="Collapsed" VerticalAlignment="Center" HorizontalAlignment="Center"> <!-- Status Offline -->
-                                <TextBlock Foreground="#949BA4">Status Offline</TextBlock>
-                            </Grid>
+            <!--  Content  -->
+            <Border
+                Grid.Row="1"
+                Height="100"
+                Style="{DynamicResource BorderDefault}">
+                <Grid>
+                    <!--  Main  -->
+                    <Grid x:Name="DiscordRichPresencePreviewOnline" Visibility="Visible">
+                        <!--  Status Online  -->
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100px" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <!--  Phasmophobia RP Preview Images  -->
+                        <Grid
+                            Grid.Column="0"
+                            Margin="10"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                            <Border
+                                Width="80"
+                                Height="80"
+                                CornerRadius="8">
+                                <Border.Background>
+                                    <ImageBrush x:Name="DiscordRichPresencePreviewImage" ImageSource="{DynamicResource PreviewImage}" />
+                                </Border.Background>
+                            </Border>
                         </Grid>
-                    </Border>
-                </StackPanel>
-            </Grid> 
+
+                        <!--  Phasmophobia RP Preview Info  -->
+                        <StackPanel
+                            Grid.Column="1"
+                            VerticalAlignment="Center"
+                            Orientation="Vertical">
+                            <TextBlock
+                                Margin="0,1,0,1"
+                                FontWeight="Medium"
+                                Text="Phasmophobia" />
+                            <TextBlock
+                                x:Name="DiscordRichPresencePreviewDetails"
+                                Margin="0,1,0,1"
+                                Text="6 Tanglewood Drive - Nightmare" />
+                            <TextBlock
+                                x:Name="DiscordRichPresencePreviewState"
+                                Margin="0,1,0,1"
+                                Text="Party (1 of 4)" />
+                            <TextBlock
+                                x:Name="DiscordRichPresencePreviewElapsed"
+                                Margin="0,1,0,1"
+                                Text="00:00 elapsed" />
+                        </StackPanel>
+                    </Grid>
+                    <Grid
+                        x:Name="DiscordRichPresencePreviewOffline"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Visibility="Collapsed">
+                        <!--  Status Offline  -->
+                        <TextBlock Foreground="{StaticResource Foreground2}">Status Offline</TextBlock>
+                    </Grid>
+                </Grid>
+            </Border>
         </Grid>
     </Grid>
 </Window>

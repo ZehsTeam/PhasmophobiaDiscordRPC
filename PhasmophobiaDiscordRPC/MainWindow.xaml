@@ -213,7 +213,7 @@
                                                 Width="15"
                                                 Height="15"
                                                 Foreground="{StaticResource Foreground}"
-                                                Kind="WindowClose" />
+                                                Kind="Close" />
                                         </Button>
                                         <Button
                                             x:Name="LobbyCodeConfirmButton"
@@ -304,10 +304,11 @@
                                         Grid.Column="0"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center">
-                                        <Image
-                                            Width="15px"
-                                            Height="15px"
-                                            Source="/img/crown-gold.png" />
+                                        <materialDesign:PackIcon
+                                            Width="15"
+                                            Height="15"
+                                            Foreground="Gold"
+                                            Kind="Crown" />
                                     </Grid>
 
                                     <Grid Grid.Column="1" VerticalAlignment="Center">
@@ -344,10 +345,11 @@
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
                                         Visibility="Hidden">
-                                        <Image
-                                            Width="15px"
-                                            Height="15px"
-                                            Source="/img/crown-gold.png" />
+                                        <materialDesign:PackIcon
+                                            Width="15"
+                                            Height="15"
+                                            Foreground="Gold"
+                                            Kind="Crown" />
                                     </Grid>
 
                                     <Grid Grid.Column="1" VerticalAlignment="Center">
@@ -384,10 +386,11 @@
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
                                         Visibility="Hidden">
-                                        <Image
-                                            Width="15px"
-                                            Height="15px"
-                                            Source="/img/crown-gold.png" />
+                                        <materialDesign:PackIcon
+                                            Width="15"
+                                            Height="15"
+                                            Foreground="Gold"
+                                            Kind="Crown" />
                                     </Grid>
 
                                     <Grid Grid.Column="1" VerticalAlignment="Center">
@@ -424,10 +427,11 @@
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
                                         Visibility="Hidden">
-                                        <Image
-                                            Width="15px"
-                                            Height="15px"
-                                            Source="/img/crown-gold.png" />
+                                        <materialDesign:PackIcon
+                                            Width="15"
+                                            Height="15"
+                                            Foreground="Gold"
+                                            Kind="Crown" />
                                     </Grid>
 
                                     <Grid Grid.Column="1" VerticalAlignment="Center">
@@ -528,7 +532,7 @@
                         VerticalAlignment="Center"
                         Visibility="Collapsed">
                         <!--  Status Offline  -->
-                        <TextBlock Foreground="{StaticResource Foreground2}">Status Offline</TextBlock>
+                        <TextBlock Foreground="{StaticResource Foreground2}" Text="Status Offline" />
                     </Grid>
                 </Grid>
             </Border>

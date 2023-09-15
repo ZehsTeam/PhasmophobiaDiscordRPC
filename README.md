@@ -4,8 +4,8 @@ Display a custom Discord rich presence for Phasmophobia depending on the current
 Made using WPF in .NET 7
 
 **Libraries in use**<be>
-- [Lachee's DiscordRPC for C#](https://github.com/Lachee/discord-rpc-csharp) (v1.2.1.24)<br>
-- [MaterialDesignInXamlToolkit](https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit) (v4.9.0)
+- [Lachee's DiscordRPC for C#](https://github.com/Lachee/discord-rpc-csharp)<br>
+- [MaterialDesignInXamlToolkit](https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit)
 
 ## Download
 Download the [Latest Release](https://github.com/ZehsTeam/PhasmophobiaDiscordRPC/releases)

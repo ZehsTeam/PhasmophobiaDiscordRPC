@@ -3,7 +3,7 @@ Display a custom Discord rich presence for Phasmophobia depending on the current
 
 Made using WPF in .NET 7
 
-**Libraries in use**<be>
+#### Dependencies
 - [Lachee's DiscordRPC for C#](https://github.com/Lachee/discord-rpc-csharp)<br>
 - [MaterialDesignInXamlToolkit](https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit)
 
@@ -40,7 +40,7 @@ C:\Users\<User>\AppData\LocalLow\Kinetic Games\Phasmophobia\Player.log
 - Lobby Code
 - Max Players
 
-## App Window
+## Screenshots
 ![App Window](https://i.imgur.com/VAV5Tv7.png?raw=true)
 ![App Window](https://i.imgur.com/tAo35fj.png?raw=true)
 

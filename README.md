@@ -38,7 +38,8 @@ C:\Users\<User>\AppData\LocalLow\Kinetic Games\Phasmophobia\Player.log
 - Max Players
 
 ## App Window
-![App](https://i.imgur.com/W6VEbqe.png?raw=true)
+![App Window](https://i.imgur.com/VAV5Tv7.png?raw=true)
+![App Window](https://i.imgur.com/tAo35fj.png?raw=true)
 
 ## Default Phasmophobia Discord rich presence<be>
 ![Default](https://i.imgur.com/bRYOoxi.png?raw=true)

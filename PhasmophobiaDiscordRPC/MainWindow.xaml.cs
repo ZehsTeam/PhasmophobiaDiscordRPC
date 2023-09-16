@@ -202,6 +202,8 @@ namespace PhasmophobiaDiscordRPC
             if (playerState == PlayerState.Lobby) details = "In Lobby";
             if (playerState == PlayerState.InMatch) details = map.Name;
 
+            if (map.MapType == MapType.Training) return details;
+
             bool showDifficulty = difficulty != Difficulty.None && difficulty != Difficulty.Training;
             if (showDifficulty)
             {

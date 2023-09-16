@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -19,9 +20,9 @@ namespace PhasmophobiaDiscordRPC
         ReceivedAllPlayerInfo,
         PlayerEntered,
         PlayerLeft,
+        LeftRoom,
         HostChanged,
-        HostAndLocalPlayer,
-        LeftRoom
+        HostAndLocalPlayer
     }
 
     public class LogData
@@ -225,7 +226,7 @@ namespace PhasmophobiaDiscordRPC
 
         private void UpdateGameStateForLog(LogType logType, string[] data, bool update)
         {
-            //Debug.WriteLine($"Updating game state for {Enum.GetName(logType)} with data: {CovertDataToDebugString(data)}");
+            Debug.WriteLine($"Updating game state for {Enum.GetName(logType)} with data: {CovertDataToDebugString(data)}");
 
             switch (logType)
             {
@@ -261,6 +262,9 @@ namespace PhasmophobiaDiscordRPC
                     break;
                 case LogType.LeftRoom:
                     GameStateManager.Instance.OnLeftRoom(data, update);
+                    break;
+                case LogType.HostChanged:
+                    GameStateManager.Instance.OnHostChanged(data, update);
                     break;
                 case LogType.HostAndLocalPlayer:
                     GameStateManager.Instance.OnHostAndLocalPlayer(data, update);
@@ -360,7 +364,8 @@ namespace PhasmophobiaDiscordRPC
             List<string> words = line.Split("|").ToList();
             words.RemoveAt(0);
 
-            string hostUsername = "";
+            string hostUsername = string.Empty;
+            string localUsername = string.Empty;
 
             foreach (string word in words)
             {
@@ -372,11 +377,18 @@ namespace PhasmophobiaDiscordRPC
                     hostUsername = username;
                     break;
                 }
+
+                if (playerTypeString.Contains("Local"))
+                {
+                    localUsername = username;
+                    break;
+                }
             }
 
-            return new string[1]
+            return new string[2]
             {
-                hostUsername
+                hostUsername,
+                localUsername
             };
         }
 
@@ -421,13 +433,13 @@ namespace PhasmophobiaDiscordRPC
         {
             string[] words = line.Split("|");
 
-            string username = words[1].Trim();
             string steamId = words[0].Split(':')[1].Trim();
+            string username = words[1].Trim();
 
             return new string[2]
             {
-                username,
-                steamId
+                steamId,
+                username
             };
         }
         

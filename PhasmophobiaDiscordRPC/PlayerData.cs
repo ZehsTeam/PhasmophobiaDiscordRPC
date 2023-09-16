@@ -2,8 +2,10 @@
 {
     public enum PlayerType
     {
-        Other = 0,
+        Local = 0,
         Host = 1,
+        HostAndLocal = 2,
+        Other = 3,
     }
 
     public class PlayerData
@@ -12,7 +14,9 @@
         public string SteamId { get; set; }
         public PlayerType PlayerType { get; set; }
 
-        public bool IsHost{ get { return PlayerType == PlayerType.Host; } }
+        // For ListViewPlayerItem Trigger Bindings
+        public bool IsLocal {  get { return (PlayerType == PlayerType.Local || PlayerType == PlayerType.HostAndLocal); } }
+        public bool IsHost { get { return (PlayerType == PlayerType.Host || PlayerType == PlayerType.HostAndLocal); } }
         public bool IsSteamIdEmpty { get { return SteamId == string.Empty; } }
 
         public PlayerData(string username, string steamId, PlayerType playerType)

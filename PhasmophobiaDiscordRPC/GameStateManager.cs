@@ -140,7 +140,7 @@ namespace PhasmophobiaDiscordRPC
             string levelName = data[0];
             int playerCount = int.Parse(data[1]);
             //bool isHost = data[2] == "True";
-            Difficulty difficulty = GetDifficultyFromId(data[3]);
+            //Difficulty difficulty = GetDifficultyFromId(data[3]);
 
             MapType mapType = MapDatabase.GetMapTypeByLevelName(levelName);
 
@@ -149,7 +149,6 @@ namespace PhasmophobiaDiscordRPC
             if (mapType == MapType.MainMenu)
             {
                 playerState = playerCount == 0 ? PlayerState.Menus : PlayerState.Lobby;
-                difficulty = Difficulty.None;
             }
             else
             {
@@ -158,7 +157,7 @@ namespace PhasmophobiaDiscordRPC
 
             GameState.SetMapType(mapType);
             GameState.SetPlayerState(playerState);
-            if (playerState != PlayerState.Menus) GameState.SetDifficulty(difficulty);
+            //if (playerState != PlayerState.Menus) GameState.SetDifficulty(difficulty);
 
             if (update)
             {
@@ -178,6 +177,7 @@ namespace PhasmophobiaDiscordRPC
 
         public void OnRoomCreated(string[] data, bool update)
         {
+            GameState.OnRoomCreated();
             GameState.SetPlayerState(PlayerState.Lobby);
         }
 
@@ -205,9 +205,11 @@ namespace PhasmophobiaDiscordRPC
 
         public void OnReceivedAllPlayerInfo(string[] data, bool update)
         {
-            string username = data[0];
+            string hostUsername = data[0];
+            string localUsername = data[1];
 
-            GameState.SetHostPlayer(username);
+            GameState.SetHostPlayer(hostUsername);
+            GameState.SetLocalPlayer(localUsername);
 
             if (update) UpdatePlayersListUI();
         }
@@ -229,11 +231,10 @@ namespace PhasmophobiaDiscordRPC
 
         public void OnPlayerLeft(string[] data, bool update)
         {
-            string username = data[0];
+            //string username = data[0];
             string steamId = data[1];
-            PlayerType playerType = (PlayerType)int.Parse(data[2]);
 
-            GameState.RemovePlayer(username, steamId, playerType);
+            GameState.RemovePlayer(steamId);
 
             if (update)
             {
@@ -255,8 +256,8 @@ namespace PhasmophobiaDiscordRPC
 
         public void OnHostChanged(string[] data, bool update)
         {
-            string username = data[0];
-            //string steamId = data[1];
+            //string steamId = data[0];
+            string username = data[1];
 
             GameState.SetHostPlayer(username);
 
@@ -267,7 +268,7 @@ namespace PhasmophobiaDiscordRPC
         {
             string username = data[0];
 
-            GameState.SetHostPlayer(username);
+            GameState.SetHostAndLocalPlayer(username);
 
             if (update) UpdatePlayersListUI();
         }

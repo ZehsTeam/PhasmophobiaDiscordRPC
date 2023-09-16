@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json.Bson;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 
 namespace PhasmophobiaDiscordRPC
 {
@@ -37,7 +40,6 @@ namespace PhasmophobiaDiscordRPC
 
     public class GameState
     {
-        #region Variables
         public DateTime StartDateTime { get; private set; }
         public ServerMode ServerMode { get; private set; }
         public string ServerRegion { get; private set; }
@@ -46,7 +48,8 @@ namespace PhasmophobiaDiscordRPC
         public Difficulty Difficulty { get; private set; }
         public List<PlayerData> Players { get; private set; }
         public int PlayerCount => Players.Count;
-        #endregion
+
+        private bool _nextPlayerIsHostAndLocal;
 
         public GameState()
         {
@@ -65,9 +68,11 @@ namespace PhasmophobiaDiscordRPC
             MapType = MapType.None;
             Difficulty = Difficulty.None;
             Players = new List<PlayerData>();
+
+            _nextPlayerIsHostAndLocal = false;
         }
 
-        #region Base Functions
+        #region Public Events
         public void OnPhasmophobiaStateChanged(PhasmophobiaAppState phasmophobiaAppState)
         {
             Reset();
@@ -78,6 +83,13 @@ namespace PhasmophobiaDiscordRPC
             }
         }
 
+        public void OnRoomCreated()
+        {
+            _nextPlayerIsHostAndLocal = true;
+        }
+        #endregion
+
+        #region Public Functions
         public void SetStartDateTime(DateTime startDateTime)
         {
             StartDateTime = startDateTime;
@@ -120,61 +132,114 @@ namespace PhasmophobiaDiscordRPC
         public void SetPlayers(List<PlayerData> players)
         {
             Players = players;
+
+            Debug.WriteLine($"[Set {players.Count} Players]");
+
+            players.ForEach(player =>
+            {
+                Debug.WriteLine($"[Set Player] Username: {player.Username}, Steam ID: {player.SteamId}, PlayerType: {Enum.GetName(player.PlayerType)}");
+            });
         }
 
         public void AddPlayer(string username, string steamId, PlayerType playerType)
         {
-            string[] steamIds = Players.Select(player => player.SteamId).ToArray();
-            if (steamIds.Contains(steamId)) return;
+            PlayerData player = GetPlayerFromUsername(username);
+            if (player != null) return;
+
+            // Room Created
+            if (_nextPlayerIsHostAndLocal)
+            {
+                playerType = PlayerType.HostAndLocal;
+                _nextPlayerIsHostAndLocal = false;
+            }
+
+            Debug.WriteLine($"[Added Player] Username: {username}, Steam ID: {steamId}, PlayerType: {Enum.GetName(playerType)}");
 
             Players.Add(new PlayerData(username, steamId, playerType));
         }
 
-        public void RemovePlayer(string username, string steamId, PlayerType playerType)
+        public void RemovePlayer(string steamId)
         {
-            string[] steamIds = Players.Select(player => player.SteamId).ToArray();
-            if (!steamIds.Contains(steamId)) return;
+            PlayerData player = GetPlayerFromSteamId(steamId);
+            if (player == null) return;
 
-            int targetPlayerIndex = -1;
+            int index = GetIndexForPlayer(player);
 
-            for (int i = 0; i < steamIds.Length; i++)
-            {
-                if (steamIds[i] == steamId)
-                {
-                    targetPlayerIndex = i;
-                    break;
-                }
-            }
+            Debug.WriteLine($"[Removed Player] Username: {player.Username}, Steam ID: {player.SteamId}, PlayerType: {Enum.GetName(player.PlayerType)}");
 
-            Players.RemoveAt(targetPlayerIndex);
+            Players.RemoveAt(index);
         }
 
         public void SetHostPlayer(string username)
         {
+            SetPlayerTypeForPlayerUsername(username, PlayerType.Host);
+        }
+        
+        public void SetLocalPlayer(string username)
+        {
+            SetPlayerTypeForPlayerUsername(username, PlayerType.Local);
+        }
+
+        public void SetHostAndLocalPlayer(string username)
+        {
+            SetPlayerTypeForPlayerUsername(username, PlayerType.HostAndLocal);
+        }
+        #endregion
+
+        #region Private Player Functions
+        private void SetPlayerTypeForPlayerUsername(string username, PlayerType playerType)
+        {
+            PlayerData player = GetPlayerFromUsername(username);
+            if (player == null) return;
+
+            SetPlayerTypeForPlayer(player, playerType);
+        }
+
+        private void SetPlayerTypeForPlayerSteamId(string steamId, PlayerType playerType)
+        {
+            PlayerData player = GetPlayerFromSteamId(steamId);
+            if (player == null) return;
+
+            SetPlayerTypeForPlayer(player, playerType);
+        }
+
+        private void SetPlayerTypeForPlayer(PlayerData player, PlayerType playerType)
+        {
+            int index = GetIndexForPlayer(player);
+            Players[index].PlayerType = playerType;
+        }
+
+        private PlayerData GetPlayerWithPlayerType(PlayerType playerType)
+        {
+            PlayerData[] players = Players.Where(player => player.PlayerType == playerType).ToArray();
+            if (players.Length == 0) return null;
+            return players[0];
+        }
+
+        private PlayerData GetPlayerFromUsername(string username)
+        {
+            PlayerData[] players = Players.Where(player => player.Username == username).ToArray();
+            if (players.Length == 0) return null;
+            return players[0];
+        }
+
+        private PlayerData GetPlayerFromSteamId(string steamId)
+        {
+            PlayerData[] players = Players.Where(player => player.SteamId == steamId).ToArray();
+            if (players.Length == 0) return null;
+            return players[0];
+        }
+        
+        private int GetIndexForPlayer(PlayerData player)
+        {
             int length = Players.Count;
 
-            // Reset Host
-            for (int i = 0;i < length; i++)
-            {
-                PlayerData playerData = Players[i];
-
-                if (playerData.PlayerType == PlayerType.Host)
-                {
-                    Players[i].PlayerType = PlayerType.Other;
-                }
-            }
-
-            // Set Host
             for (int i = 0; i < length; i++)
             {
-                PlayerData playerData = Players[i];
-
-                if (playerData.Username == username)
-                {
-                    Players[i].PlayerType = PlayerType.Host;
-                    break;
-                }
+                if (Players[i] == player) return i;
             }
+
+            return -1;
         }
         #endregion
     }

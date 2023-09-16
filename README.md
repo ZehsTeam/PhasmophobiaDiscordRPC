@@ -39,10 +39,11 @@ C:\Users\<User>\AppData\LocalLow\Kinetic Games\Phasmophobia\Player.log
 - Lobby Type (Public / Private)
 - Lobby Code
 - Max Players
+- Difficulty
 
 ## Screenshots
-![App Window](https://i.imgur.com/VAV5Tv7.png?raw=true)
-![App Window](https://i.imgur.com/tAo35fj.png?raw=true)
+![App Window](https://i.imgur.com/zNgQfXA.png?raw=true)
+![App Window](https://i.imgur.com/q3fb69j.png?raw=true)
 
 ## Default Phasmophobia Discord rich presence<be>
 ![Default](https://i.imgur.com/bRYOoxi.png?raw=true)

@@ -1,24 +1,20 @@
-﻿using DiscordRPC.Logging;
-using DiscordRPC;
+﻿using DiscordRPC;
+using DiscordRPC.Logging;
 using System;
-using System.Windows;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Windows.Input;
-using System.Windows.Controls;
 using System.Text.RegularExpressions;
+using System.Timers;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Collections.Generic;
-using MaterialDesignThemes.Wpf;
-using System.Timers;
 using Timer = System.Timers.Timer;
 
 namespace PhasmophobiaDiscordRPC
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    /// 
     public partial class MainWindow : Window
     {
         public static MainWindow Instance;
@@ -32,6 +28,9 @@ namespace PhasmophobiaDiscordRPC
         {
             MainWindow.Instance = this;
 
+            DataContext = this;
+            _playersList = new ObservableCollection<PlayerData>();
+
             InitializeComponent();
             Initialize();
         }
@@ -39,7 +38,7 @@ namespace PhasmophobiaDiscordRPC
         private void Initialize()
         {
             SetPhasmophobiaAppStatusUI(PhasmophobiaAppState.Closed);
-            SetPlayersListUI(new List<PlayerData>());
+            SetPlayersList(new List<PlayerData>());
             SetDiscordRichPresencePreviewUIState(false);
 
             _timer = new Timer();
@@ -133,7 +132,7 @@ namespace PhasmophobiaDiscordRPC
         private void OnPhasmophobiaClosed()
         {
             SetPhasmophobiaAppStatusUI(PhasmophobiaAppState.Closed);
-            SetPlayersListUI(new List<PlayerData>());
+            SetPlayersList(new List<PlayerData>());
 
             ClearPresence();
         }
@@ -404,56 +403,23 @@ namespace PhasmophobiaDiscordRPC
             GameStateManager.Instance.SetMaxPlayers(maxPlayers);
         }
 
-        // Players
-        public void SetPlayersListUI(List<PlayerData> players)
+        // Players List
+        private ObservableCollection<PlayerData> _playersList;
+
+        public ObservableCollection<PlayerData> PlayersList
         {
-            int length = players.Count;
+            get { return _playersList; }
+            set { _playersList = value; }
+        }
 
-            for (int i = 0; i < 4; i++)
+        public void SetPlayersList(List<PlayerData> players)
+        {
+            PlayersList.Clear();
+
+            foreach (PlayerData player in players)
             {
-                if (i <= length - 1)
-                {
-                    PlayerData player = players[i];
-
-                    SetPlayerItem(i, player.Username, player.SteamId, player.PlayerType);
-                }
-                else
-                {
-                    ClearPlayerItem(i);
-                }
+                PlayersList.Add(player);
             }
-        }
-
-        private void ClearPlayerItem(int index)
-        {
-            SetPlayerItem(index, string.Empty, string.Empty, PlayerType.Other);
-        }
-
-        private void SetPlayerItem(int index, string username, string steamId, PlayerType playerType)
-        {
-            ColumnDefinition column1 = new ColumnDefinition[4] { Player1HostColumn, Player2HostColumn, Player3HostColumn, Player4HostColumn }[index];
-            ColumnDefinition column2 = new ColumnDefinition[4] { Player1HostColumn2, Player2HostColumn2, Player3HostColumn2, Player4HostColumn2 }[index];
-            Grid iconGrid = new Grid[4] { Player1IconColumnGrid, Player2IconColumnGrid, Player3IconColumnGrid, Player4IconColumnGrid }[index];
-            TextBox usernameTextBox = new TextBox[4] { Player1UsernameTextBox, Player2UsernameTextBox, Player3UsernameTextBox, Player4UsernameTextBox }[index];
-            TextBox steamIdTextBox = new TextBox[4] { Player1SteamIdTextBox, Player2SteamIdTextBox, Player3SteamIdTextBox, Player4SteamIdTextBox }[index];
-
-            bool hasIcon = playerType == PlayerType.Host;
-            int width = hasIcon ? 30 : 8;
-            GridLength gridLength = new GridLength(width, GridUnitType.Pixel);
-            Visibility iconVisibility = hasIcon ? Visibility.Visible : Visibility.Hidden;
-            Visibility usernameVisibility = username == string.Empty ? Visibility.Hidden : Visibility.Visible;
-            Visibility steamIdVisibility = steamId == string.Empty ? Visibility.Hidden : Visibility.Visible;
-
-            this.Dispatcher.Invoke(() =>
-            {
-                column1.Width = gridLength;
-                column2.Width = gridLength;
-                iconGrid.Visibility = iconVisibility;
-                usernameTextBox.Text = username;
-                usernameTextBox.Visibility = usernameVisibility;
-                steamIdTextBox.Text = steamId;
-                steamIdTextBox.Visibility = steamIdVisibility;
-            });
         }
         #endregion
 

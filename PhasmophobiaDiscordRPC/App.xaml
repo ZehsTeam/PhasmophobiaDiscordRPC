@@ -13,7 +13,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <materialDesign:BundledTheme
                     BaseTheme="Dark"
-                    PrimaryColor="DeepPurple"
+                    PrimaryColor="Blue"
                     SecondaryColor="Lime" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml" />
             </ResourceDictionary.MergedDictionaries>
@@ -103,6 +103,76 @@
                 <Setter Property="FontFamily" Value="{DynamicResource MaterialDesignFont}" />
                 <Setter Property="FontSize" Value="12" />
                 <Setter Property="FontWeight" Value="Normal" />
+            </Style>
+
+            <!--  ListView  -->
+            <Style x:Key="ListViewPlayerItem" TargetType="{x:Type ListViewItem}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ListViewItem}">
+                            <Border
+                                x:Name="Border"
+                                Height="30"
+                                Style="{DynamicResource BorderDefault}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+
+                                    <!--  Host Icon & Username  -->
+                                    <Grid Grid.Column="0" VerticalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition x:Name="IconColumn" Width="30" />
+                                            <ColumnDefinition Width="auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <!--  Host Icon  -->
+                                        <Grid
+                                            Grid.Column="0"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center">
+                                            <materialDesign:PackIcon
+                                                x:Name="Icon"
+                                                Width="15"
+                                                Height="15"
+                                                Foreground="Gold"
+                                                Kind="Crown" />
+                                        </Grid>
+
+                                        <!--  Username  -->
+                                        <TextBox
+                                            Grid.Column="1"
+                                            IsReadOnly="True"
+                                            Style="{DynamicResource TextBoxDefault}"
+                                            Text="{Binding Username}" />
+                                    </Grid>
+
+                                    <!--  Steam ID  -->
+                                    <Grid Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBox
+                                            IsReadOnly="True"
+                                            Style="{DynamicResource TextBoxDefault}"
+                                            Text="{Binding SteamId}" />
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Border" Property="Style" Value="{StaticResource BorderDark}" />
+                                </Trigger>
+                                <DataTrigger Binding="{Binding IsHost}" Value="True">
+                                    <Setter TargetName="IconColumn" Property="Width" Value="30" />
+                                    <Setter TargetName="Icon" Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsHost}" Value="False">
+                                    <Setter TargetName="IconColumn" Property="Width" Value="8" />
+                                    <Setter TargetName="Icon" Property="Visibility" Value="Hidden" />
+                                </DataTrigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
             </Style>
         </ResourceDictionary>
     </Application.Resources>

@@ -54,7 +54,7 @@ namespace PhasmophobiaDiscordRPC
 
         public void UpdatePlayersListUI()
         {
-            MainWindow.Instance.SetPlayersListUI(GameState.Players);
+            MainWindow.Instance.SetPlayersList(GameState.Players);
         }
 
         public PhasmophobiaAppState GetPhasmophobiaAppState()

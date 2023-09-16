@@ -1,9 +1,7 @@
-﻿using Newtonsoft.Json.Bson;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Numerics;
 
 namespace PhasmophobiaDiscordRPC
 {
@@ -26,8 +24,7 @@ namespace PhasmophobiaDiscordRPC
 
     public enum Difficulty
     {
-        None = -1,
-        Training = 0,
+        None = 0,
         Amateur = 1,
         Intermediate = 2,
         Professional = 3,
@@ -35,6 +32,7 @@ namespace PhasmophobiaDiscordRPC
         Insanity = 5,
         ChallengeMode = 6,
         Custom = 7,
+        Training = 8
     }
     #endregion
 
@@ -133,12 +131,12 @@ namespace PhasmophobiaDiscordRPC
         {
             Players = players;
 
-            Debug.WriteLine($"[Set {players.Count} Players]");
+            //Debug.WriteLine($"[Set {players.Count} Players]");
 
-            players.ForEach(player =>
-            {
-                Debug.WriteLine($"[Set Player] Username: {player.Username}, Steam ID: {player.SteamId}, PlayerType: {Enum.GetName(player.PlayerType)}");
-            });
+            //players.ForEach(player =>
+            //{
+            //    Debug.WriteLine($"[Set Player] Username: {player.Username}, Steam ID: {player.SteamId}, PlayerType: {Enum.GetName(player.PlayerType)}");
+            //});
         }
 
         public void AddPlayer(string username, string steamId, PlayerType playerType)
@@ -153,7 +151,7 @@ namespace PhasmophobiaDiscordRPC
                 _nextPlayerIsHostAndLocal = false;
             }
 
-            Debug.WriteLine($"[Added Player] Username: {username}, Steam ID: {steamId}, PlayerType: {Enum.GetName(playerType)}");
+            //Debug.WriteLine($"[Added Player] Username: {username}, Steam ID: {steamId}, PlayerType: {Enum.GetName(playerType)}");
 
             Players.Add(new PlayerData(username, steamId, playerType));
         }
@@ -165,7 +163,7 @@ namespace PhasmophobiaDiscordRPC
 
             int index = GetIndexForPlayer(player);
 
-            Debug.WriteLine($"[Removed Player] Username: {player.Username}, Steam ID: {player.SteamId}, PlayerType: {Enum.GetName(player.PlayerType)}");
+            //Debug.WriteLine($"[Removed Player] Username: {player.Username}, Steam ID: {player.SteamId}, PlayerType: {Enum.GetName(player.PlayerType)}");
 
             Players.RemoveAt(index);
         }

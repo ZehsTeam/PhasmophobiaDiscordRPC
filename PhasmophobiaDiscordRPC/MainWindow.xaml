@@ -6,6 +6,7 @@
     xmlns:local="clr-namespace:PhasmophobiaDiscordRPC"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
     Title="Phasmophobia Rich Presence"
     Width="400"
     Height="600"
@@ -15,9 +16,11 @@
     Topmost="True"
     WindowStyle="None"
     mc:Ignorable="d">
+
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0" ResizeBorderThickness="0" />
     </WindowChrome.WindowChrome>
+
     <Grid Background="{StaticResource Background}">
         <Grid.Effect>
             <DropShadowEffect
@@ -49,7 +52,7 @@
                 Grid.Column="0"
                 Margin="10,0,0,0"
                 VerticalAlignment="Center">
-                <TextBlock Text="Phasmophobia Rich Presence v1.0.1" />
+                <TextBlock Text="Phasmophobia Rich Presence v1.1.0" />
             </Grid>
 
             <!--  Buttons  -->
@@ -235,27 +238,66 @@
                         </Border>
                     </StackPanel>
 
-                    <!--  Max Players  -->
-                    <StackPanel Orientation="Vertical" Visibility="Visible">
-                        <TextBlock
-                            Margin="0,0,0,5"
-                            Style="{DynamicResource TextBlockLabel}"
-                            Text="MAX PLAYERS" />
-                        <Border
-                            x:Name="MaxPlayersBorder"
-                            Margin="0,0,0,10"
-                            Style="{DynamicResource BorderDark}">
-                            <ComboBox
-                                x:Name="MaxPlayersComboBox"
-                                Height="30"
-                                IsEnabled="True"
-                                SelectionChanged="MaxPlayersComboBox_SelectionChanged"
-                                Style="{DynamicResource ComboBoxDefault}">
-                                <ComboBoxItem Content="4" />
-                                <ComboBoxItem Content="3" />
-                                <ComboBoxItem Content="2" />
-                            </ComboBox>
-                        </Border>
+                    <!--  Max Players & Difficulty  -->
+                    <StackPanel Orientation="Vertical">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <!--  Max Players  -->
+                            <Grid Grid.Column="0">
+                                <StackPanel Orientation="Vertical" Visibility="Visible">
+                                    <TextBlock
+                                        Margin="0,0,0,5"
+                                        Style="{DynamicResource TextBlockLabel}"
+                                        Text="MAX PLAYERS" />
+                                    <Border
+                                        x:Name="MaxPlayersBorder"
+                                        Margin="0,0,0,10"
+                                        Style="{DynamicResource BorderDark}">
+                                        <ComboBox
+                                            Height="30"
+                                            IsEnabled="True"
+                                            SelectionChanged="MaxPlayersComboBox_SelectionChanged"
+                                            Style="{DynamicResource ComboBoxDefault}">
+                                            <ComboBoxItem Content="4" />
+                                            <ComboBoxItem Content="3" />
+                                            <ComboBoxItem Content="2" />
+                                        </ComboBox>
+                                    </Border>
+                                </StackPanel>
+                            </Grid>
+
+                            <!--  Difficulty  -->
+                            <Grid Grid.Column="2">
+                                <StackPanel Orientation="Vertical" Visibility="Visible">
+                                    <TextBlock
+                                        Margin="0,0,0,5"
+                                        Style="{DynamicResource TextBlockLabel}"
+                                        Text="DIFFICULTY" />
+                                    <Border Margin="0,0,0,10" Style="{DynamicResource BorderDark}">
+                                        <ComboBox
+                                            x:Name="DifficultyComboBox"
+                                            Height="30"
+                                            IsEnabled="True"
+                                            SelectionChanged="DifficultyComboBox_SelectionChanged"
+                                            Style="{DynamicResource ComboBoxDefault}">
+                                            <ComboBoxItem Content="None" />
+                                            <ComboBoxItem Content="Amateur" />
+                                            <ComboBoxItem Content="Intermediate" />
+                                            <ComboBoxItem Content="Professional" />
+                                            <ComboBoxItem Content="Nightmare" />
+                                            <ComboBoxItem Content="Insanity" />
+                                            <ComboBoxItem Content="Challenge Mode" />
+                                            <ComboBoxItem Content="Custom" />
+                                        </ComboBox>
+                                    </Border>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
                     </StackPanel>
 
                     <!--  Players List  -->

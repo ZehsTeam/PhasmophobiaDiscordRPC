@@ -117,6 +117,13 @@ namespace PhasmophobiaDiscordRPC
 
             UpdatePresence();
         }
+
+        public void SetDifficulty(Difficulty difficulty)
+        {
+            GameState.SetDifficulty(difficulty);
+
+            UpdatePresence();
+        }
         #endregion
 
         #region PlayerLogReader Callbacks
@@ -149,6 +156,8 @@ namespace PhasmophobiaDiscordRPC
             if (mapType == MapType.MainMenu)
             {
                 playerState = playerCount == 0 ? PlayerState.Menus : PlayerState.Lobby;
+                GameState.SetDifficulty(Difficulty.None);
+                MainWindow.Instance.SetDifficultyComboBoxSelection(Difficulty.None);
             }
             else
             {
@@ -158,6 +167,12 @@ namespace PhasmophobiaDiscordRPC
             GameState.SetMapType(mapType);
             GameState.SetPlayerState(playerState);
             //if (playerState != PlayerState.Menus) GameState.SetDifficulty(difficulty);
+
+            if (mapType == MapType.Training)
+            {
+                GameState.SetDifficulty(Difficulty.Training);
+                MainWindow.Instance.SetDifficultyComboBoxSelection(Difficulty.Training);
+            }
 
             if (update)
             {
@@ -171,6 +186,7 @@ namespace PhasmophobiaDiscordRPC
             Difficulty difficulty = GetDifficultyFromId(data[0]);
 
             GameState.SetDifficulty(difficulty);
+            MainWindow.Instance.SetDifficultyComboBoxSelection(difficulty);
 
             if (update) UpdatePresence();
         }

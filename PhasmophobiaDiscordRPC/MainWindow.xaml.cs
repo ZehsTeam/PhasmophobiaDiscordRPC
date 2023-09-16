@@ -24,6 +24,8 @@ namespace PhasmophobiaDiscordRPC
         private static readonly Regex _lobbyCodeRegex = new Regex("^[0-9]+$");
         private Timer _timer;
 
+        private bool _settingDifficultyComboBoxUI;
+
         public MainWindow()
         {
             MainWindow.Instance = this;
@@ -46,6 +48,8 @@ namespace PhasmophobiaDiscordRPC
             _timer.Interval = 1000;
             _timer.Start();
 
+            _settingDifficultyComboBoxUI = false;
+
             InitializeDiscordRpc();
             ClearPresence();
 
@@ -61,6 +65,7 @@ namespace PhasmophobiaDiscordRPC
 
             LobbyTypeComboBox.SelectedIndex = 0;
             MaxPlayersComboBox.SelectedIndex = 0;
+            DifficultyComboBox.SelectedIndex = 0;
         }
 
         private void Deinitialize()
@@ -393,7 +398,7 @@ namespace PhasmophobiaDiscordRPC
             MaxPlayersComboBox.IsEnabled = isEnabled;
         }
 
-        private void MaxPlayersComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void MaxPlayersComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBox comboBox = (ComboBox)sender;
             string value = ("" + comboBox.SelectedValue.ToString()).Split(":")[1].Trim();
@@ -401,6 +406,52 @@ namespace PhasmophobiaDiscordRPC
             int maxPlayers = Convert.ToInt32(value);
 
             GameStateManager.Instance.SetMaxPlayers(maxPlayers);
+        }
+
+        // Difficulty
+        private void DifficultyComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_settingDifficultyComboBoxUI) return;
+
+            ComboBox comboBox = (ComboBox)sender;
+            string value = ("" + comboBox.SelectedValue.ToString()).Split(":")[1].Trim();
+
+            Difficulty difficulty = GetDifficultyFromString(value);
+
+            Debug.WriteLine($"Setting GameStateManager Difficulty: {Enum.GetName(difficulty)}");
+
+            GameStateManager.Instance.SetDifficulty(difficulty);
+        }
+
+        public void SetDifficultyComboBoxSelection(Difficulty difficulty)
+        {
+            int index = (int)difficulty;
+            if (index == (int)Difficulty.Training) index = 0;
+
+            _settingDifficultyComboBoxUI = true;
+
+            this.Dispatcher.Invoke(() =>
+            {
+                DifficultyComboBox.SelectedIndex = index;
+            });
+
+            _settingDifficultyComboBoxUI = false;
+        }
+
+        private Difficulty GetDifficultyFromString(string difficultyString)
+        {
+            Difficulty difficulty = Difficulty.None;
+
+            if (difficultyString == "Amateur") difficulty = Difficulty.Amateur;
+            if (difficultyString == "Intermediate") difficulty = Difficulty.Intermediate;
+            if (difficultyString == "Professional") difficulty = Difficulty.Professional;
+            if (difficultyString == "Nightmare") difficulty = Difficulty.Nightmare;
+            if (difficultyString == "Insanity") difficulty = Difficulty.Insanity;
+            if (difficultyString == "Challenge Mode") difficulty = Difficulty.ChallengeMode;
+            if (difficultyString == "Custom") difficulty = Difficulty.Custom;
+            if (difficultyString == "Training") difficulty = Difficulty.Training;
+
+            return difficulty;
         }
 
         // Players List

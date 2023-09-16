@@ -226,7 +226,7 @@ namespace PhasmophobiaDiscordRPC
 
         private void UpdateGameStateForLog(LogType logType, string[] data, bool update)
         {
-            Debug.WriteLine($"Updating game state for {Enum.GetName(logType)} with data: {CovertDataToDebugString(data)}");
+            //Debug.WriteLine($"Updating game state for {Enum.GetName(logType)} with data: {CovertDataToDebugString(data)}");
 
             switch (logType)
             {

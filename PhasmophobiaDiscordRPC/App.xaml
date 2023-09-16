@@ -123,7 +123,7 @@
                                     <!--  Host Icon & Username  -->
                                     <Grid Grid.Column="0" VerticalAlignment="Center">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition x:Name="IconColumn" Width="30" />
+                                            <ColumnDefinition x:Name="IconColumn" />
                                             <ColumnDefinition Width="auto" />
                                         </Grid.ColumnDefinitions>
 
@@ -149,8 +149,12 @@
                                     </Grid>
 
                                     <!--  Steam ID  -->
-                                    <Grid Grid.Column="1" VerticalAlignment="Center">
+                                    <Grid
+                                        Grid.Column="1"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center">
                                         <TextBox
+                                            x:Name="SteamID"
                                             IsReadOnly="True"
                                             Style="{DynamicResource TextBoxDefault}"
                                             Text="{Binding SteamId}" />
@@ -168,6 +172,9 @@
                                 <DataTrigger Binding="{Binding IsHost}" Value="False">
                                     <Setter TargetName="IconColumn" Property="Width" Value="8" />
                                     <Setter TargetName="Icon" Property="Visibility" Value="Hidden" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsSteamIdEmpty}" Value="True">
+                                    <Setter TargetName="SteamID" Property="Visibility" Value="Hidden" />
                                 </DataTrigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>

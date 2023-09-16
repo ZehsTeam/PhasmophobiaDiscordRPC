@@ -38,7 +38,7 @@ namespace PhasmophobiaDiscordRPC
         private void Initialize()
         {
             SetPhasmophobiaAppStatusUI(PhasmophobiaAppState.Closed);
-            SetPlayersList(new List<PlayerData>());
+            SetPlayersListUI(new List<PlayerData>());
             SetDiscordRichPresencePreviewUIState(false);
 
             _timer = new Timer();
@@ -132,7 +132,7 @@ namespace PhasmophobiaDiscordRPC
         private void OnPhasmophobiaClosed()
         {
             SetPhasmophobiaAppStatusUI(PhasmophobiaAppState.Closed);
-            SetPlayersList(new List<PlayerData>());
+            SetPlayersListUI(new List<PlayerData>());
 
             ClearPresence();
         }
@@ -412,14 +412,17 @@ namespace PhasmophobiaDiscordRPC
             set { _playersList = value; }
         }
 
-        public void SetPlayersList(List<PlayerData> players)
+        public void SetPlayersListUI(List<PlayerData> players)
         {
-            PlayersList.Clear();
-
-            foreach (PlayerData player in players)
+            this.Dispatcher.Invoke(() =>
             {
-                PlayersList.Add(player);
-            }
+                PlayersList.Clear();
+
+                foreach (PlayerData player in players)
+                {
+                    PlayersList.Add(player);
+                }
+            });
         }
         #endregion
 

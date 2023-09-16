@@ -11,13 +11,9 @@
         public string Username { get; set; }
         public string SteamId { get; set; }
         public PlayerType PlayerType { get; set; }
-        public bool IsHost
-        {
-            get
-            {
-                return PlayerType == PlayerType.Host;
-            }
-        }
+
+        public bool IsHost{ get { return PlayerType == PlayerType.Host; } }
+        public bool IsSteamIdEmpty { get { return SteamId == string.Empty; } }
 
         public PlayerData(string username, string steamId, PlayerType playerType)
         {

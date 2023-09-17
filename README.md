@@ -34,6 +34,7 @@ Download the [latest release](https://github.com/ZehsTeam/PhasmophobiaDiscordRPC
  
 #### Program
 - View player list (Username & SteamID)
+- Discord rich presence preview
 
 ## Settings you can change
 - Lobby Type (Public / Private)

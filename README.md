@@ -21,18 +21,19 @@ C:\Users\<User>\AppData\LocalLow\Kinetic Games\Phasmophobia\Player.log
 Download the [latest release](https://github.com/ZehsTeam/PhasmophobiaDiscordRPC/releases) and run the program while Phasmophobia is running.
 
 ## Features
+#### Discord rich presence
 - Shows server mode (Singleplayer / Multiplayer)
 - Shows player state (Initializing, Main Menu, Lobby, In Match)
+- Shows elapsed time for each player state
 - Shows map info (Map Icon & Map Name)
 - Shows difficulty
 - Shows player count
-- Shows elapsed time for each player state
-- View player list (Username & SteamID)
-
-#### Optional
-- Show lobby code in a private game
+- Shows max player count
+- Show private lobby code
   - Shows server region
-- Change max player count
+ 
+#### Program
+- View player list (Username & SteamID)
 
 ## Settings you can change
 - Lobby Type (Public / Private)

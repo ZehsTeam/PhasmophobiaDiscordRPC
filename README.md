@@ -5,21 +5,22 @@ Made using WPF in .NET 7
 
 Uses [Lachee's DiscordRPC for C#](https://github.com/Lachee/discord-rpc-csharp)<br>
 
-## Download
-Download the [Latest Release](https://github.com/ZehsTeam/PhasmophobiaDiscordRPC/releases)
+## ![Download Icon](https://i.imgur.com/TpnrFSH.png) Download
+Download the latest release [here](https://github.com/ZehsTeam/PhasmophobiaDiscordRPC/releases)
 
-#### Requires
-- [Phasmophobia](https://store.steampowered.com/app/739630/Phasmophobia/)
+## Safe to use? - Game state detection
 
-## Game state detection
+This program is safe to use since it only uses the **Player.log** file to detect the current game state.
 
-It uses **Player.log** to detect the current game state.
+**Player.log** file location:
 ```
 C:\Users\<User>\AppData\LocalLow\Kinetic Games\Phasmophobia\Player.log
 ```
 
-## Features
+## How to use
+Download the [latest release](https://github.com/ZehsTeam/PhasmophobiaDiscordRPC/releases) and run the program while Phasmophobia is running.
 
+## Features
 - Shows server mode (Singleplayer / Multiplayer)
 - Shows player state (Initializing, Main Menu, Lobby, In Match)
 - Shows map info (Map Icon & Map Name)
@@ -33,21 +34,17 @@ C:\Users\<User>\AppData\LocalLow\Kinetic Games\Phasmophobia\Player.log
   - Shows server region
 - Change max player count
 
-## App settings you can change
+## Settings you can change
 - Lobby Type (Public / Private)
 - Lobby Code
 - Max Players
 - Difficulty
 
-## Screenshots
-![App Window](https://i.imgur.com/zNgQfXA.png?raw=true)
-![App Window](https://i.imgur.com/q3fb69j.png?raw=true)
-
-## Default Phasmophobia Discord rich presence<be>
-![Default](https://i.imgur.com/bRYOoxi.png?raw=true)
-
-## Custom Phasmophobia Discord rich presence<br>
-![In Menus](https://i.imgur.com/cWVDidl.png?raw=true)
-![In Lobby Singleplayer](https://i.imgur.com/flXtT3h.png?raw=true)
-![In Match Singleplayer](https://i.imgur.com/jD4CkAL.png?raw=true)
-![In Lobby Multiplayer](https://i.imgur.com/LvPTykr.png?raw=true)
+## Screenshots - Program
+![Program Window](https://i.imgur.com/zNgQfXA.png)
+![Program Window](https://i.imgur.com/q3fb69j.png)
+## Screenshots - Discord rich presence
+![Discord rich presence](https://i.imgur.com/cWVDidl.png)
+![Discord rich presence](https://i.imgur.com/flXtT3h.png)
+![Discord rich presence](https://i.imgur.com/jD4CkAL.png)
+![Discord rich presence](https://i.imgur.com/LvPTykr.png)

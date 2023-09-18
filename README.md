@@ -54,7 +54,7 @@ Download the [latest release](https://github.com/ZehsTeam/PhasmophobiaDiscordRPC
 
 ## Screenshots - Program
 ![Program Window](https://i.imgur.com/zNgQfXA.png)
-![Program Window](https://i.imgur.com/q3fb69j.png)
+![Program Window](https://i.imgur.com/AWLzJFF.png)
 ## Screenshots - Discord rich presence
 ![Discord rich presence](https://i.imgur.com/cWVDidl.png)
 ![Discord rich presence](https://i.imgur.com/flXtT3h.png)

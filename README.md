@@ -18,7 +18,7 @@ C:\Users\<User>\AppData\LocalLow\Kinetic Games\Phasmophobia\Player.log
 ```
 
 ## How to use
-Download the [latest release](https://github.com/ZehsTeam/PhasmophobiaDiscordRPC/releases) and run the program while Phasmophobia is running.
+Download the [latest release](https://github.com/ZehsTeam/PhasmophobiaDiscordRPC/releases) and run the program while Phasmophobia & Discord are running.
 
 ## Features
 #### Discord rich presence
@@ -33,7 +33,7 @@ Download the [latest release](https://github.com/ZehsTeam/PhasmophobiaDiscordRPC
   - Shows server region
  
 #### Program
-- View player list (Username & SteamID)
+- View player list (Username & Steam ID)
 - Discord rich presence preview
 
 ## Settings you can change

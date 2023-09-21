@@ -3,9 +3,6 @@ using System.Windows;
 
 namespace PhasmophobiaDiscordRPC
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
         private static Mutex _mutex = null;

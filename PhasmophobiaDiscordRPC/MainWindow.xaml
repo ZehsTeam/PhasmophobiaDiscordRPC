@@ -3,10 +3,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:PhasmophobiaDiscordRPC"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:sys="clr-namespace:System;assembly=mscorlib"
     Title="Phasmophobia Rich Presence"
     Width="400"
     Height="600"
@@ -16,11 +14,9 @@
     Topmost="True"
     WindowStyle="None"
     mc:Ignorable="d">
-
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0" ResizeBorderThickness="0" />
     </WindowChrome.WindowChrome>
-
     <Grid Background="{StaticResource Background}">
         <Grid.Effect>
             <DropShadowEffect
@@ -31,7 +27,7 @@
         </Grid.Effect>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="30px" />
+            <RowDefinition Height="30" />
             <RowDefinition Height="auto" />
             <RowDefinition />
             <RowDefinition Height="auto" />
@@ -127,7 +123,7 @@
                             x:Name="PhasmophobiaAppStatusTextBlock"
                             Margin="5,0,0,0"
                             FontWeight="Medium"
-                            Foreground="#F44336"
+                            Foreground="{StaticResource Red}"
                             Text="Offline" />
                     </StackPanel>
                 </StackPanel>
@@ -306,6 +302,7 @@
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
+                                <ColumnDefinition Width="10" />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
 
@@ -315,7 +312,7 @@
                                 Style="{DynamicResource TextBlockLabel}"
                                 Text="PLAYERS" />
                             <TextBlock
-                                Grid.Column="1"
+                                Grid.Column="2"
                                 Margin="0,0,0,5"
                                 Style="{DynamicResource TextBlockLabel}"
                                 Text="STEAM ID" />

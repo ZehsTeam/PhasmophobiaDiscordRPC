@@ -33,7 +33,7 @@ Download the [latest release](https://github.com/ZehsTeam/PhasmophobiaDiscordRPC
   - Shows server region
  
 #### Program
-- View player list (Username & SteamID)
+- View player list (Username & Steam ID)
 - Discord rich presence preview
 
 ## Settings you can change

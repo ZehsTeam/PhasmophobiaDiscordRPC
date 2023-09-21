@@ -25,14 +25,19 @@
             <Color x:Key="Colors.Background2">#282b30</Color>
             <Color x:Key="Colors.Background3">#1e2124</Color>
             <Color x:Key="Colors.Background4">#424549</Color>
+            <Color x:Key="Colors.Red">#F44336</Color>
+            <Color x:Key="Colors.Green">#4CAF50</Color>
 
             <!--  Brushes  -->
+            <materialDesign:BrushRoundConverter x:Key="BrushRoundConverter" />
             <SolidColorBrush x:Key="Foreground" Color="{StaticResource Colors.Foreground}" />
             <SolidColorBrush x:Key="Foreground2" Color="{StaticResource Colors.Foreground2}" />
             <SolidColorBrush x:Key="Background" Color="{StaticResource Colors.Background}" />
             <SolidColorBrush x:Key="Background2" Color="{StaticResource Colors.Background2}" />
             <SolidColorBrush x:Key="Background3" Color="{StaticResource Colors.Background3}" />
             <SolidColorBrush x:Key="Background4" Color="{StaticResource Colors.Background4}" />
+            <SolidColorBrush x:Key="Red" Color="{StaticResource Colors.Red}" />
+            <SolidColorBrush x:Key="Green" Color="{StaticResource Colors.Green}" />
 
             <!--  Border  -->
             <Style x:Key="BorderDefault" TargetType="{x:Type Border}">
@@ -117,6 +122,7 @@
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition />
+                                        <ColumnDefinition Width="10" />
                                         <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
 
@@ -150,7 +156,7 @@
 
                                     <!--  Steam ID  -->
                                     <Grid
-                                        Grid.Column="1"
+                                        Grid.Column="2"
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Center">
                                         <TextBox

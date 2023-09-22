@@ -127,28 +127,21 @@ namespace PhasmophobiaDiscordRPC
         #endregion
 
         #region PlayerLogReader Callbacks
-        public void OnServerModeOffline(string[] data, bool update)
+        public void OnServerModeOffline(bool update)
         {
             GameState.SetServerMode(ServerMode.Offline);
         }
 
-        public void OnServerModeOnline(string[] data, bool update)
+        public void OnServerModeOnline(string region, bool update)
         {
-            string region = data[0];
-
             GameState.SetServerMode(ServerMode.Online);
             GameState.SetServerRegion(region);
 
             MainWindow.Instance.SetLobbyRegionTextBlock(region);
         }
 
-        public void OnLoadedLevel(string[] data, bool update)
+        public void OnLoadedLevel(string levelName, int playerCount, bool isHost, Difficulty difficulty, bool update)
         {
-            string levelName = data[0];
-            int playerCount = int.Parse(data[1]);
-            //bool isHost = data[2] == "True";
-            //Difficulty difficulty = GetDifficultyFromId(data[3]);
-
             MapType mapType = MapDatabase.GetMapTypeByLevelName(levelName);
 
             PlayerState playerState = PlayerState.None;
@@ -166,6 +159,8 @@ namespace PhasmophobiaDiscordRPC
 
             GameState.SetMapType(mapType);
             GameState.SetPlayerState(playerState);
+
+            // This broke with the new Ascension Hotfix v0.9.0.10
             //if (playerState != PlayerState.Menus) GameState.SetDifficulty(difficulty);
 
             if (mapType == MapType.Training)
@@ -181,36 +176,30 @@ namespace PhasmophobiaDiscordRPC
             }
         }
 
-        public void OnApplyingDifficulty(string[] data, bool update)
+        public void OnApplyingDifficulty(Difficulty difficulty, bool update)
         {
-            Difficulty difficulty = GetDifficultyFromId(data[0]);
-
             GameState.SetDifficulty(difficulty);
             MainWindow.Instance.SetDifficultyComboBoxSelection(difficulty);
 
             if (update) UpdatePresence();
         }
 
-        public void OnRoomCreated(string[] data, bool update)
+        public void OnRoomCreated(bool update)
         {
             GameState.OnRoomCreated();
             GameState.SetPlayerState(PlayerState.Lobby);
         }
 
-        public void OnJoinedRoom(string[] data, bool update)
+        public void OnJoinedRoom(bool update)
         {
             GameState.SetPlayerState(PlayerState.Lobby);
 
             if (update) UpdatePresence();
         }
 
-        public void OnReceivedPlayerInfo(string[] data, bool update)
+        public void OnReceivedPlayerInfo(string username, string steamId, bool update)
         {
-            string username = data[0];
-            string steamId = data[1];
-            PlayerType playerType = (PlayerType)int.Parse(data[2]);
-
-            GameState.AddPlayer(username, steamId, playerType);
+            GameState.AddPlayer(username, steamId);
 
             if (update)
             {
@@ -219,24 +208,17 @@ namespace PhasmophobiaDiscordRPC
             }
         }
 
-        public void OnReceivedAllPlayerInfo(string[] data, bool update)
+        public void OnReceivedAllPlayerInfo(string hostUsername, string localUsername, bool update)
         {
-            string hostUsername = data[0];
-            string localUsername = data[1];
-
             GameState.SetHostPlayer(hostUsername);
             GameState.SetLocalPlayer(localUsername);
 
             if (update) UpdatePlayersListUI();
         }
 
-        public void OnPlayerEntered(string[] data, bool update)
+        public void OnPlayerEntered(string username, string steamId, bool update)
         {
-            string username = data[0];
-            string steamId = data[1];
-            PlayerType playerType = (PlayerType)int.Parse(data[2]);
-
-            GameState.AddPlayer(username, steamId, playerType);
+            GameState.AddPlayer(username, steamId);
 
             if (update)
             {
@@ -245,12 +227,9 @@ namespace PhasmophobiaDiscordRPC
             }
         }
 
-        public void OnPlayerLeft(string[] data, bool update)
+        public void OnPlayerLeft(string username, string steamId, bool update)
         {
-            //string username = data[0];
-            string steamId = data[1];
-
-            GameState.RemovePlayer(steamId);
+            GameState.RemovePlayer(username);
 
             if (update)
             {
@@ -259,7 +238,7 @@ namespace PhasmophobiaDiscordRPC
             }
         }
 
-        public void OnLeftRoom(string[] data, bool update)
+        public void OnLeftRoom(bool update)
         {
             GameState.SetPlayerState(PlayerState.Menus);
 
@@ -270,20 +249,15 @@ namespace PhasmophobiaDiscordRPC
             }
         }
 
-        public void OnHostChanged(string[] data, bool update)
+        public void OnHostChanged(string username, string steamId, bool update)
         {
-            //string steamId = data[0];
-            string username = data[1];
-
             GameState.SetHostPlayer(username);
 
             if (update) UpdatePlayersListUI();
         }
 
-        public void OnHostAndLocalPlayer(string[] data, bool update)
+        public void OnHostAndLocalPlayer(string username, bool update)
         {
-            string username = data[0];
-
             GameState.SetHostAndLocalPlayer(username);
 
             if (update) UpdatePlayersListUI();
@@ -294,11 +268,6 @@ namespace PhasmophobiaDiscordRPC
             if (!Enum.IsDefined(typeof(Difficulty), id)) return Difficulty.None;
 
             return (Difficulty)id;
-        }
-
-        private Difficulty GetDifficultyFromId(string id)
-        {
-            return GetDifficultyFromId(int.Parse(id));
         }
         #endregion
     }

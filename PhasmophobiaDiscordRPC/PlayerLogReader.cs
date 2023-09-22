@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -25,18 +24,6 @@ namespace PhasmophobiaDiscordRPC
         HostAndLocalPlayer
     }
 
-    public class LogData
-    {
-        public LogType LogType;
-        public string Line;
-
-        public LogData(LogType logType, string line)
-        {
-            LogType = logType;
-            Line = line;
-        }
-    }
-
     internal class PlayerLogReader
     {
         public static PlayerLogReader Instance;
@@ -44,8 +31,6 @@ namespace PhasmophobiaDiscordRPC
         private string _logFilePath;
         private int _lineIndex;
         private int _lineCount;
-
-        private List<LogData> _logHistory = new List<LogData>();
 
         public PlayerLogReader()
         {
@@ -78,6 +63,11 @@ namespace PhasmophobiaDiscordRPC
         public void Deinitialize()
         {
             GameStateManager.Instance.OnPhasmophobiaAppStateChanged -= OnPhasmophobiaAppStateChanged;
+        }
+
+        public void Tick()
+        {
+            ReadNewLines();
         }
 
         #region Phasmophobia App State
@@ -149,25 +139,13 @@ namespace PhasmophobiaDiscordRPC
             }
         }
 
-        private void ReadLine(string line, bool update)
+        private void ReadLine(string line, bool update = true)
         {
             LogType logType = GetLogTypeFromLine(line);
             if (logType == LogType.None) return;
 
-            _logHistory.Add(new LogData(logType, line));
-
-            string[] data = ParseLogType(logType, line);
-            UpdateGameStateForLog(logType, data, update);
-        }
-
-        private void ReadLine(string line)
-        {
-            ReadLine(line, true);
-        }
-
-        public void Tick()
-        {
-            ReadNewLines();
+            // Get line data and update GameStateManager
+            ParseLogType(logType, line, update);
         }
 
         private LogType GetLogTypeFromLine(string line)
@@ -189,177 +167,108 @@ namespace PhasmophobiaDiscordRPC
             return LogType.None;
         }
 
-        private string[] ParseLogType(LogType logType, string line)
+        private void ParseLogType(LogType logType, string line, bool update)
         {
             switch (logType)
             {
                 case LogType.ServerModeOffline:
-                    return ParseServerModeOfflineLine(line);
-                case LogType.ServerModeOnline:
-                    return ParseServerModeOnlineLine(line);
-                case LogType.LoadedLevel:
-                    return ParseLoadedLevelLine(line);
-                case LogType.ApplyingDifficulty:
-                    return ParseApplyingDifficultyLine(line);
-                case LogType.RoomCreated:
-                    return ParseRoomCreatedLine(line);
-                case LogType.JoinedRoom:
-                    return ParseJoinedRoomLine(line);
-                case LogType.ReceivedPlayerInfo:
-                    return ParseReceivedPlayerInfoLine(line);
-                case LogType.ReceivedAllPlayerInfo:
-                    return ParseReceivedAllPlayerInfoLine(line);
-                case LogType.PlayerEntered:
-                    return ParsePlayerEnteredLine(line);
-                case LogType.PlayerLeft:
-                    return ParsePlayerLeftLine(line);
-                case LogType.LeftRoom:
-                    return ParseLeftRoomLine(line);
-                case LogType.HostChanged:
-                    return ParseHostChangedLine(line);
-                case LogType.HostAndLocalPlayer:
-                    return ParseHostAndLocalPlayerLine(line);
-            }
-
-            return new string[0];
-        }
-
-        private void UpdateGameStateForLog(LogType logType, string[] data, bool update)
-        {
-            //Debug.WriteLine($"Updating game state for {Enum.GetName(logType)} with data: {CovertDataToDebugString(data)}");
-
-            switch (logType)
-            {
-                case LogType.ServerModeOffline:
-                    GameStateManager.Instance.OnServerModeOffline(data, update);
+                    ParseServerModeOfflineLine(line, update);
                     break;
                 case LogType.ServerModeOnline:
-                    GameStateManager.Instance.OnServerModeOnline(data, update);
+                    ParseServerModeOnlineLine(line, update);
                     break;
                 case LogType.LoadedLevel:
-                    GameStateManager.Instance.OnLoadedLevel(data, update);
+                    ParseLoadedLevelLine(line, update);
                     break;
                 case LogType.ApplyingDifficulty:
-                    GameStateManager.Instance.OnApplyingDifficulty(data, update);
+                    ParseApplyingDifficultyLine(line, update);
                     break;
                 case LogType.RoomCreated:
-                    GameStateManager.Instance.OnRoomCreated(data, update);
+                    ParseRoomCreatedLine(line, update);
                     break;
                 case LogType.JoinedRoom:
-                    GameStateManager.Instance.OnJoinedRoom(data, update);
+                    ParseJoinedRoomLine(line, update);
                     break;
                 case LogType.ReceivedPlayerInfo:
-                    GameStateManager.Instance.OnReceivedPlayerInfo(data, update);
+                    ParseReceivedPlayerInfoLine(line, update);
                     break;
                 case LogType.ReceivedAllPlayerInfo:
-                    GameStateManager.Instance.OnReceivedAllPlayerInfo(data, update);
+                    ParseReceivedAllPlayerInfoLine(line, update);
                     break;
                 case LogType.PlayerEntered:
-                    GameStateManager.Instance.OnPlayerEntered(data, update);
-                    break; ;
+                    ParsePlayerEnteredLine(line, update);
+                    break;
                 case LogType.PlayerLeft:
-                    GameStateManager.Instance.OnPlayerLeft(data, update);
+                    ParsePlayerLeftLine(line, update);
                     break;
                 case LogType.LeftRoom:
-                    GameStateManager.Instance.OnLeftRoom(data, update);
+                    ParseLeftRoomLine(line, update);
                     break;
                 case LogType.HostChanged:
-                    GameStateManager.Instance.OnHostChanged(data, update);
+                    ParseHostChangedLine(line, update);
                     break;
                 case LogType.HostAndLocalPlayer:
-                    GameStateManager.Instance.OnHostAndLocalPlayer(data, update);
+                    ParseHostAndLocalPlayerLine(line, update);
                     break;
             }
-        }
-
-        private string CovertDataToDebugString(string[] data)
-        {
-            string result = "";
-
-            int length = data.Length;
-            for (int i = 0; i < length; i++)
-            {
-                result += data[i].ToString();
-                if (i < length - 1) result += ", ";
-            }
-
-            return result;
         }
 
         #region Line Parsing
-        private string[] ParseServerModeOfflineLine(string line)
+        private void ParseServerModeOfflineLine(string line, bool update)
         {
-            return new string[0];
+            GameStateManager.Instance.OnServerModeOffline(update);
         }
 
-        private string[] ParseServerModeOnlineLine(string line)
+        private void ParseServerModeOnlineLine(string line, bool update)
         {
             string region = line.Replace("/*", "").Split(":")[1].Trim();
 
             if (region == "us") region = "na";
             if (region == "asia") region = "as";
 
-            return new string[1]
-            {
-                region.ToUpper()
-            };
+            GameStateManager.Instance.OnServerModeOnline(region.ToUpper(), update);
         }
 
-        private string[] ParseLoadedLevelLine(string line)
+        private void ParseLoadedLevelLine(string line, bool update)
         {
             string[] words = line.Split("|");
 
             string levelName = words[0].Split(":")[1].Replace(" ", "").Trim();
-            string playerCount = words[1].Split(":")[1].Trim();
-            string isHost = words[2].Split(":")[1].Trim();
+            int playerCount = int.Parse(words[1].Split(":")[1].Trim());
+            bool isHost = words[2].Split(":")[1].Trim() == "True";
             Difficulty difficulty = GetDifficultyFromLine(words[3].Split(":")[1]);
 
-            return new string[4]
-            {
-                levelName,
-                playerCount,
-                isHost,
-                ((int)difficulty).ToString()
-            };
+            GameStateManager.Instance.OnLoadedLevel(levelName, playerCount, isHost, difficulty, update);
         }
 
-        private string[] ParseApplyingDifficultyLine(string line)
+        private void ParseApplyingDifficultyLine(string line, bool update)
         {
             Difficulty difficulty = GetDifficultyFromLine(line);
 
-            return new string[1]
-            {
-                ((int)difficulty).ToString()
-            };
+            GameStateManager.Instance.OnApplyingDifficulty(difficulty, update);
         }
 
-        private string[] ParseRoomCreatedLine(string line)
+        private void ParseRoomCreatedLine(string line, bool update)
         {
-            return new string[0];
+            GameStateManager.Instance.OnRoomCreated(update);
         }
 
-        private string[] ParseJoinedRoomLine(string line)
+        private void ParseJoinedRoomLine(string line, bool update)
         {
-            return new string[0];
+            GameStateManager.Instance.OnJoinedRoom(update);
         }
 
-        private string[] ParseReceivedPlayerInfoLine(string line)
+        private void ParseReceivedPlayerInfoLine(string line, bool update)
         {
             string[] words = line.Split("|");
 
             string username = words[1].Trim();
             string steamId = words[0].Split(':')[1].Trim();
-            string playerType = ((int)PlayerType.Other).ToString();
 
-            return new string[3]
-            {
-                username,
-                steamId,
-                playerType
-            };
+            GameStateManager.Instance.OnReceivedPlayerInfo(username, steamId, update);
         }
 
-        private string[] ParseReceivedAllPlayerInfoLine(string line)
+        private void ParseReceivedAllPlayerInfoLine(string line, bool update)
         {
             List<string> words = line.Split("|").ToList();
             words.RemoveAt(0);
@@ -385,72 +294,49 @@ namespace PhasmophobiaDiscordRPC
                 }
             }
 
-            return new string[2]
-            {
-                hostUsername,
-                localUsername
-            };
+            GameStateManager.Instance.OnReceivedAllPlayerInfo(hostUsername, localUsername, update);
         }
 
-        private string[] ParsePlayerEnteredLine(string line)
+        private void ParsePlayerEnteredLine(string line, bool update)
         {
             string[] words = line.Split("|");
 
             string username = words[1].Trim();
             string steamId = words[0].Split(':')[1].Trim();
-            string playerType = ((int)PlayerType.Other).ToString();
 
-            return new string[3]
-            {
-                username,
-                steamId,
-                playerType
-            };
+            GameStateManager.Instance.OnPlayerEntered(username, steamId, update);
         }
 
-        private string[] ParsePlayerLeftLine(string line)
+        private void ParsePlayerLeftLine(string line, bool update)
         {
             string[] words = line.Split("|");
 
             string username = words[1].Trim();
             string steamId = words[0].Split(':')[1].Trim();
-            string playerType = ((int)PlayerType.Other).ToString();
 
-            return new string[3]
-            {
-                username,
-                steamId,
-                playerType
-            };
+            GameStateManager.Instance.OnPlayerLeft(username, steamId, update);
         }
 
-        private string[] ParseLeftRoomLine(string line)
+        private void ParseLeftRoomLine(string line, bool update)
         {
-            return new string[0];
+            GameStateManager.Instance.OnLeftRoom(update);
         }
         
-        private string[] ParseHostChangedLine(string line)
+        private void ParseHostChangedLine(string line, bool update)
         {
             string[] words = line.Split("|");
 
             string steamId = words[0].Split(':')[1].Trim();
             string username = words[1].Trim();
 
-            return new string[2]
-            {
-                steamId,
-                username
-            };
+            GameStateManager.Instance.OnHostChanged(username, steamId, update);
         }
         
-        private string[] ParseHostAndLocalPlayerLine(string line)
+        private void ParseHostAndLocalPlayerLine(string line, bool update)
         {
             string username = line.Split(':')[1].Trim();
 
-            return new string[1]
-            {
-                username
-            };
+            GameStateManager.Instance.OnHostAndLocalPlayer(username, update);
         }
         #endregion
 

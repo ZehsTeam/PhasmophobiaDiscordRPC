@@ -139,10 +139,12 @@ namespace PhasmophobiaDiscordRPC
             //});
         }
 
-        public void AddPlayer(string username, string steamId, PlayerType playerType)
+        public void AddPlayer(string username, string steamId)
         {
             PlayerData player = GetPlayerFromUsername(username);
             if (player != null) return;
+
+            PlayerType playerType = PlayerType.Other;
 
             // Room Created
             if (_nextPlayerIsHostAndLocal)
@@ -156,9 +158,9 @@ namespace PhasmophobiaDiscordRPC
             Players.Add(new PlayerData(username, steamId, playerType));
         }
 
-        public void RemovePlayer(string steamId)
+        public void RemovePlayer(string username)
         {
-            PlayerData player = GetPlayerFromSteamId(steamId);
+            PlayerData player = GetPlayerFromUsername(username);
             if (player == null) return;
 
             int index = GetIndexForPlayer(player);

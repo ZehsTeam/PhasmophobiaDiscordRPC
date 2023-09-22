@@ -21,17 +21,18 @@ C:\Users\<User>\AppData\LocalLow\Kinetic Games\Phasmophobia\Player.log
 Download the [latest release](https://github.com/ZehsTeam/PhasmophobiaDiscordRPC/releases) and run the program while Phasmophobia & Discord are running.
 
 ## Discord rich presence not showing?
-#### Make sure these settings are enabled in your Discord client:
+**Make sure these settings are enabled in your Discord client:**
 - "Display current activity as a status message."
 - "Share your activity status by default when joining large servers"
 
-#### Discord > User Settings > Activity Settings > Activity Privacy
+**Discord > User Settings > Activity Settings > Activity Privacy**
+
 ![Discord Activity Privacy Settings](https://i.imgur.com/rjkxIcl.png)
 
 [More info on activity status](https://support.discord.com/hc/en-us/articles/7931156448919)
 
 ## Features
-#### Discord rich presence
+**Discord rich presence**
 - Shows server mode (Singleplayer / Multiplayer)
 - Shows player state (Initializing, Main Menu, Lobby, In Match)
 - Shows elapsed time for each player state
@@ -42,7 +43,7 @@ Download the [latest release](https://github.com/ZehsTeam/PhasmophobiaDiscordRPC
 - Show private lobby code
   - Shows server region
  
-#### Program
+**Program**
 - View player list (Username & Steam ID)
 - Discord rich presence preview
 

@@ -51,11 +51,12 @@ Download the [latest release](https://github.com/ZehsTeam/PhasmophobiaDiscordRPC
 - Lobby Type (Public / Private)
 - Lobby Code
 - Max Players
+- Map Type
 - Difficulty
 
 ## Screenshots - Program
-![Program Window](https://i.imgur.com/zNgQfXA.png)
-![Program Window](https://i.imgur.com/q3fb69j.png)
+![Program Window](https://i.imgur.com/pa7hFoE.png.png)
+![Program Window](https://i.imgur.com/6t5Eapl.png.png)
 ## Screenshots - Discord rich presence
 ![Discord rich presence](https://i.imgur.com/cWVDidl.png)
 ![Discord rich presence](https://i.imgur.com/flXtT3h.png)

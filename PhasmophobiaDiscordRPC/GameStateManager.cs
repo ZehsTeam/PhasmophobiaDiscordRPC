@@ -124,6 +124,13 @@ namespace PhasmophobiaDiscordRPC
 
             UpdatePresence();
         }
+
+        public void SetMapType(MapType mapType)
+        {
+            GameState.SetMapType(mapType);
+
+            UpdatePresence();
+        }
         #endregion
 
         #region PlayerLogReader Callbacks
@@ -143,14 +150,19 @@ namespace PhasmophobiaDiscordRPC
         public void OnLoadedLevel(string levelName, int playerCount, bool isHost, Difficulty difficulty, bool update)
         {
             MapType mapType = MapDatabase.GetMapTypeByLevelName(levelName);
+            MainWindow.Instance.SetMapTypeComboBoxSelection(mapType);
 
             PlayerState playerState = PlayerState.None;
 
             if (mapType == MapType.MainMenu)
             {
                 playerState = playerCount == 0 ? PlayerState.Menus : PlayerState.Lobby;
-                GameState.SetDifficulty(Difficulty.None);
-                MainWindow.Instance.SetDifficultyComboBoxSelection(Difficulty.None);
+
+                if (playerState == PlayerState.Menus)
+                {
+                    GameState.SetDifficulty(Difficulty.None);
+                    MainWindow.Instance.SetDifficultyComboBoxSelection(Difficulty.None);
+                }
             }
             else
             {

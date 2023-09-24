@@ -134,107 +134,7 @@
         <Grid Grid.Row="2" Margin="10,5,10,5">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <StackPanel Orientation="Vertical">
-                    <!--  Lobby Type  -->
-                    <StackPanel Orientation="Vertical" Visibility="Visible">
-                        <TextBlock
-                            Margin="0,0,0,5"
-                            Style="{DynamicResource TextBlockLabel}"
-                            Text="LOBBY TYPE" />
-                        <Border
-                            x:Name="LobbyTypeBorder"
-                            Margin="0,0,0,10"
-                            Style="{DynamicResource BorderDark}">
-                            <ComboBox
-                                x:Name="LobbyTypeComboBox"
-                                Height="30"
-                                IsEnabled="True"
-                                SelectionChanged="LobbyTypeComboBox_SelectionChanged"
-                                Style="{DynamicResource ComboBoxDefault}">
-                                <ComboBoxItem Content="Public" />
-                                <ComboBoxItem Content="Private" />
-                            </ComboBox>
-                        </Border>
-                    </StackPanel>
-
-                    <!--  Lobby Code  -->
-                    <StackPanel Orientation="Vertical" Visibility="Visible">
-                        <TextBlock
-                            Margin="0,0,0,5"
-                            Style="{DynamicResource TextBlockLabel}"
-                            Text="LOBBY CODE" />
-                        <Border
-                            x:Name="LobbyCodeBorder"
-                            Margin="0,0,0,10"
-                            Style="{DynamicResource BorderDark}">
-                            <Grid
-                                x:Name="LobbyTypeGrid"
-                                Height="30"
-                                IsEnabled="True">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="38px" />
-                                    <ColumnDefinition Width="1*" />
-                                    <ColumnDefinition Width="60px" />
-                                </Grid.ColumnDefinitions>
-
-                                <Grid
-                                    Grid.Column="0"
-                                    Margin="8,5,0,5"
-                                    VerticalAlignment="Center">
-                                    <TextBlock
-                                        x:Name="LobbyRegionTextBlock"
-                                        IsEnabled="True"
-                                        Text="##  —" />
-                                </Grid>
-
-                                <Grid Grid.Column="1" Margin="5,5,0,5">
-                                    <TextBox
-                                        x:Name="LobbyCodeTextBox"
-                                        Height="20px"
-                                        materialDesign:HintAssist.Hint="######"
-                                        DataObject.Pasting="LobbyCodeTextBox_Pasting"
-                                        MaxLength="6"
-                                        PreviewTextInput="LobbyCodeTextBox_PreviewTextInput"
-                                        Style="{DynamicResource TextBoxDefault}"
-                                        TextChanged="LobbyCodeTextBox_TextChanged" />
-                                </Grid>
-
-                                <Grid Grid.Column="2">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Button
-                                            x:Name="LobbyCodeCancelButton"
-                                            Width="30px"
-                                            Height="30px"
-                                            Padding="0"
-                                            Background="{x:Null}"
-                                            BorderBrush="{x:Null}"
-                                            Click="LobbyCodeCancelButton_Click">
-                                            <materialDesign:PackIcon
-                                                Width="15"
-                                                Height="15"
-                                                Foreground="{StaticResource Foreground}"
-                                                Kind="Close" />
-                                        </Button>
-                                        <Button
-                                            x:Name="LobbyCodeConfirmButton"
-                                            Width="30px"
-                                            Height="30px"
-                                            Padding="0"
-                                            Background="{x:Null}"
-                                            BorderBrush="{x:Null}"
-                                            Click="LobbyCodeConfirmButton_Click">
-                                            <materialDesign:PackIcon
-                                                Width="15"
-                                                Height="15"
-                                                Foreground="{StaticResource Foreground}"
-                                                Kind="Check" />
-                                        </Button>
-                                    </StackPanel>
-                                </Grid>
-                            </Grid>
-                        </Border>
-                    </StackPanel>
-
-                    <!--  Max Players & Difficulty  -->
+                    <!--  Lobby Type & Lobby Code  -->
                     <StackPanel Orientation="Vertical">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -243,57 +143,208 @@
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
 
-                            <!--  Max Players  -->
-                            <Grid Grid.Column="0">
-                                <StackPanel Orientation="Vertical" Visibility="Visible">
-                                    <TextBlock
-                                        Margin="0,0,0,5"
-                                        Style="{DynamicResource TextBlockLabel}"
-                                        Text="MAX PLAYERS" />
-                                    <Border
-                                        x:Name="MaxPlayersBorder"
-                                        Margin="0,0,0,10"
-                                        Style="{DynamicResource BorderDark}">
-                                        <ComboBox
-                                            x:Name="MaxPlayersComboBox"
-                                            Height="30"
-                                            IsEnabled="True"
-                                            SelectionChanged="MaxPlayersComboBox_SelectionChanged"
-                                            Style="{DynamicResource ComboBoxDefault}">
-                                            <ComboBoxItem Content="4" />
-                                            <ComboBoxItem Content="3" />
-                                            <ComboBoxItem Content="2" />
-                                        </ComboBox>
-                                    </Border>
-                                </StackPanel>
-                            </Grid>
+                            <!--  Lobby Type  -->
+                            <StackPanel
+                                Grid.Column="0"
+                                Orientation="Vertical"
+                                Visibility="Visible">
+                                <TextBlock
+                                    Margin="0,0,0,5"
+                                    Style="{DynamicResource TextBlockLabel}"
+                                    Text="LOBBY TYPE" />
+                                <Border
+                                    x:Name="LobbyTypeBorder"
+                                    Margin="0,0,0,10"
+                                    Style="{DynamicResource BorderDark}">
+                                    <ComboBox
+                                        x:Name="LobbyTypeComboBox"
+                                        Height="30"
+                                        IsEnabled="True"
+                                        SelectionChanged="LobbyTypeComboBox_SelectionChanged"
+                                        Style="{DynamicResource ComboBoxDefault}">
+                                        <ComboBoxItem Content="Public" />
+                                        <ComboBoxItem Content="Private" />
+                                    </ComboBox>
+                                </Border>
+                            </StackPanel>
+
+                            <!--  Lobby Code  -->
+                            <StackPanel
+                                Grid.Column="2"
+                                Orientation="Vertical"
+                                Visibility="Visible">
+                                <TextBlock
+                                    Margin="0,0,0,5"
+                                    Style="{DynamicResource TextBlockLabel}"
+                                    Text="LOBBY CODE" />
+                                <Border
+                                    x:Name="LobbyCodeBorder"
+                                    Margin="0,0,0,10"
+                                    Style="{DynamicResource BorderDark}">
+                                    <Grid
+                                        x:Name="LobbyTypeGrid"
+                                        Height="30"
+                                        IsEnabled="True">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="38px" />
+                                            <ColumnDefinition Width="1*" />
+                                            <ColumnDefinition Width="60px" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Grid
+                                            Grid.Column="0"
+                                            Margin="8,5,0,5"
+                                            VerticalAlignment="Center">
+                                            <TextBlock
+                                                x:Name="LobbyRegionTextBlock"
+                                                IsEnabled="True"
+                                                Text="##  —" />
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" Margin="5,5,0,5">
+                                            <TextBox
+                                                x:Name="LobbyCodeTextBox"
+                                                Height="20px"
+                                                materialDesign:HintAssist.Hint="######"
+                                                DataObject.Pasting="LobbyCodeTextBox_Pasting"
+                                                MaxLength="6"
+                                                PreviewTextInput="LobbyCodeTextBox_PreviewTextInput"
+                                                Style="{DynamicResource TextBoxDefault}"
+                                                TextChanged="LobbyCodeTextBox_TextChanged" />
+                                        </Grid>
+
+                                        <Grid Grid.Column="2">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button
+                                                    x:Name="LobbyCodeCancelButton"
+                                                    Width="30px"
+                                                    Height="30px"
+                                                    Padding="0"
+                                                    Background="{x:Null}"
+                                                    BorderBrush="{x:Null}"
+                                                    Click="LobbyCodeCancelButton_Click">
+                                                    <materialDesign:PackIcon
+                                                        Width="15"
+                                                        Height="15"
+                                                        Foreground="{StaticResource Foreground}"
+                                                        Kind="Close" />
+                                                </Button>
+                                                <Button
+                                                    x:Name="LobbyCodeConfirmButton"
+                                                    Width="30px"
+                                                    Height="30px"
+                                                    Padding="0"
+                                                    Background="{x:Null}"
+                                                    BorderBrush="{x:Null}"
+                                                    Click="LobbyCodeConfirmButton_Click">
+                                                    <materialDesign:PackIcon
+                                                        Width="15"
+                                                        Height="15"
+                                                        Foreground="{StaticResource Foreground}"
+                                                        Kind="Check" />
+                                                </Button>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Grid>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+
+                    <!--  Max Players  -->
+                    <StackPanel Orientation="Vertical" Visibility="Visible">
+                        <TextBlock
+                            Margin="0,0,0,5"
+                            Style="{DynamicResource TextBlockLabel}"
+                            Text="MAX PLAYERS" />
+                        <Border
+                            x:Name="MaxPlayersBorder"
+                            Margin="0,0,0,10"
+                            Style="{DynamicResource BorderDark}">
+                            <ComboBox
+                                x:Name="MaxPlayersComboBox"
+                                Height="30"
+                                IsEnabled="True"
+                                SelectionChanged="MaxPlayersComboBox_SelectionChanged"
+                                Style="{DynamicResource ComboBoxDefault}">
+                                <ComboBoxItem Content="4" />
+                                <ComboBoxItem Content="3" />
+                                <ComboBoxItem Content="2" />
+                            </ComboBox>
+                        </Border>
+                    </StackPanel>
+
+                    <!--  Map Type & Difficulty  -->
+                    <StackPanel Orientation="Vertical">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <!--  Map Type  -->
+                            <StackPanel
+                                Grid.Column="0"
+                                Orientation="Vertical"
+                                Visibility="Visible">
+                                <TextBlock
+                                    Margin="0,0,0,5"
+                                    Style="{DynamicResource TextBlockLabel}"
+                                    Text="MAP TYPE" />
+                                <Border Margin="0,0,0,10" Style="{DynamicResource BorderDark}">
+                                    <ComboBox
+                                        x:Name="MapTypeComboBox"
+                                        Height="30"
+                                        IsEnabled="True"
+                                        SelectionChanged="MapTypeComboBox_SelectionChanged"
+                                        Style="{DynamicResource ComboBoxDefault}">
+                                        <ComboBoxItem Content="None" />
+                                        <ComboBoxItem Content="Main Menu" />
+                                        <ComboBoxItem Content="6 Tanglewood Drive" />
+                                        <ComboBoxItem Content="42 Edgefield Road" />
+                                        <ComboBoxItem Content="10 Ridgeview Court" />
+                                        <ComboBoxItem Content="Grafton Farmhouse" />
+                                        <ComboBoxItem Content="13 Willow Street" />
+                                        <ComboBoxItem Content="Brownstone High School" />
+                                        <ComboBoxItem Content="Bleasdale Farmhouse" />
+                                        <ComboBoxItem Content="Sunny Meadows" />
+                                        <ComboBoxItem Content="Sunny Meadows Restricted" />
+                                        <ComboBoxItem Content="Prison" />
+                                        <ComboBoxItem Content="Maple Lodge Campsite" />
+                                        <ComboBoxItem Content="Camp Woodwind" />
+                                        <ComboBoxItem Content="Training" />
+                                    </ComboBox>
+                                </Border>
+                            </StackPanel>
 
                             <!--  Difficulty  -->
-                            <Grid Grid.Column="2">
-                                <StackPanel Orientation="Vertical" Visibility="Visible">
-                                    <TextBlock
-                                        Margin="0,0,0,5"
-                                        Style="{DynamicResource TextBlockLabel}"
-                                        Text="DIFFICULTY" />
-                                    <Border Margin="0,0,0,10" Style="{DynamicResource BorderDark}">
-                                        <ComboBox
-                                            x:Name="DifficultyComboBox"
-                                            Height="30"
-                                            IsEnabled="True"
-                                            SelectionChanged="DifficultyComboBox_SelectionChanged"
-                                            Style="{DynamicResource ComboBoxDefault}">
-                                            <ComboBoxItem Content="None" />
-                                            <ComboBoxItem Content="Amateur" />
-                                            <ComboBoxItem Content="Intermediate" />
-                                            <ComboBoxItem Content="Professional" />
-                                            <ComboBoxItem Content="Nightmare" />
-                                            <ComboBoxItem Content="Insanity" />
-                                            <ComboBoxItem Content="Challenge Mode" />
-                                            <ComboBoxItem Content="Custom" />
-                                        </ComboBox>
-                                    </Border>
-                                </StackPanel>
-                            </Grid>
+                            <StackPanel
+                                Grid.Column="2"
+                                Orientation="Vertical"
+                                Visibility="Visible">
+                                <TextBlock
+                                    Margin="0,0,0,5"
+                                    Style="{DynamicResource TextBlockLabel}"
+                                    Text="DIFFICULTY" />
+                                <Border Margin="0,0,0,10" Style="{DynamicResource BorderDark}">
+                                    <ComboBox
+                                        x:Name="DifficultyComboBox"
+                                        Height="30"
+                                        IsEnabled="True"
+                                        SelectionChanged="DifficultyComboBox_SelectionChanged"
+                                        Style="{DynamicResource ComboBoxDefault}">
+                                        <ComboBoxItem Content="None" />
+                                        <ComboBoxItem Content="Amateur" />
+                                        <ComboBoxItem Content="Intermediate" />
+                                        <ComboBoxItem Content="Professional" />
+                                        <ComboBoxItem Content="Nightmare" />
+                                        <ComboBoxItem Content="Insanity" />
+                                        <ComboBoxItem Content="Challenge Mode" />
+                                        <ComboBoxItem Content="Custom" />
+                                    </ComboBox>
+                                </Border>
+                            </StackPanel>
                         </Grid>
                     </StackPanel>
 

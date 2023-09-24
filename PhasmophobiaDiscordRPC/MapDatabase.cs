@@ -54,6 +54,14 @@ namespace PhasmophobiaDiscordRPC
             return map.MapType;
         }
 
+        public static MapType GetMapTypeByName(string name)
+        {
+            Map map = GetMapByName(name);
+            if (map == null) return MapType.None;
+
+            return map.MapType;
+        }
+
         public static Map GetMapByMapType(MapType mapType)
         {
             Map resultMap = GetUnknownMap();
@@ -85,7 +93,23 @@ namespace PhasmophobiaDiscordRPC
 
             return resultMap;
         }
-    
+
+        public static Map GetMapByName(string name)
+        {
+            Map resultMap = GetUnknownMap();
+
+            foreach (Map map in maps)
+            {
+                if (map.Name == name)
+                {
+                    resultMap = map;
+                    break;
+                }
+            }
+
+            return resultMap;
+        }
+
         public static Map GetUnknownMap()
         {
             return new Map(MapType.None, "Unkown", "", "map-random");

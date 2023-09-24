@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Timers;
 using System.Windows;
@@ -25,6 +26,7 @@ namespace PhasmophobiaDiscordRPC
         private Timer _timer;
 
         private bool _settingDifficultyComboBoxUI;
+        private bool _settingMapTypeComboBoxUI;
 
         public MainWindow()
         {
@@ -49,6 +51,7 @@ namespace PhasmophobiaDiscordRPC
             _timer.Start();
 
             _settingDifficultyComboBoxUI = false;
+            _settingMapTypeComboBoxUI = false;
 
             InitializeDiscordRpc();
             ClearPresence();
@@ -66,6 +69,7 @@ namespace PhasmophobiaDiscordRPC
             LobbyTypeComboBox.SelectedIndex = 0;
             MaxPlayersComboBox.SelectedIndex = 0;
             DifficultyComboBox.SelectedIndex = 0;
+            MapTypeComboBox.SelectedIndex = 0;
         }
 
         private void Deinitialize()
@@ -139,6 +143,12 @@ namespace PhasmophobiaDiscordRPC
             SetPhasmophobiaAppStatusUI(PhasmophobiaAppState.Closed);
             SetPlayersListUI(new List<PlayerData>());
 
+            this.Dispatcher.Invoke(() =>
+            {
+                DifficultyComboBox.SelectedIndex = 0;
+                MapTypeComboBox.SelectedIndex = 0;
+            });
+
             ClearPresence();
         }
 
@@ -172,7 +182,7 @@ namespace PhasmophobiaDiscordRPC
                     }
                 });
 
-                SetDiscordRichPresencePreviewUI(map.ImageKey, details, state, gameState.StartDateTime);
+                SetDiscordRichPresencePreviewUI(assets.LargeImageKey, details, state, gameState.StartDateTime);
             }
             catch (Exception ex)
             {
@@ -420,7 +430,7 @@ namespace PhasmophobiaDiscordRPC
 
             Difficulty difficulty = GetDifficultyFromString(value);
 
-            Debug.WriteLine($"Setting GameStateManager Difficulty: {Enum.GetName(difficulty)}");
+            //Debug.WriteLine($"Setting GameStateManager Difficulty: {Enum.GetName(difficulty)}");
 
             GameStateManager.Instance.SetDifficulty(difficulty);
         }
@@ -454,6 +464,35 @@ namespace PhasmophobiaDiscordRPC
             if (difficultyString == "Training") difficulty = Difficulty.Training;
 
             return difficulty;
+        }
+
+        // Map Type
+        private void MapTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_settingMapTypeComboBoxUI) return;
+
+            ComboBox comboBox = (ComboBox)sender;
+            string value = ("" + comboBox.SelectedValue.ToString()).Split(":")[1].Trim();
+
+            MapType mapType = MapDatabase.GetMapTypeByName(value);
+
+            //Debug.WriteLine($"Setting GameStateManager MapTye: {Enum.GetName(mapType)}");
+
+            GameStateManager.Instance.SetMapType(mapType);
+        }
+
+        public void SetMapTypeComboBoxSelection(MapType mapType)
+        {
+            int index = (int)mapType;
+
+            _settingMapTypeComboBoxUI = true;
+
+            this.Dispatcher.Invoke(() =>
+            {
+                MapTypeComboBox.SelectedIndex = index;
+            });
+
+            _settingMapTypeComboBoxUI = false;
         }
 
         // Players List

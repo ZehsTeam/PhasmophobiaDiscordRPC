@@ -55,10 +55,12 @@ Download the [latest release](https://github.com/ZehsTeam/PhasmophobiaDiscordRPC
 - Difficulty
 
 ## Screenshots - Program
-![Program Window](https://i.imgur.com/pa7hFoE.png.png)
-![Program Window](https://i.imgur.com/6t5Eapl.png.png)
+![Program Window](https://i.imgur.com/2DqwLgZ.png)
+![Program Window](https://i.imgur.com/3e4oePw.png)
 ## Screenshots - Discord rich presence
-![Discord rich presence](https://i.imgur.com/cWVDidl.png)
-![Discord rich presence](https://i.imgur.com/flXtT3h.png)
-![Discord rich presence](https://i.imgur.com/jD4CkAL.png)
-![Discord rich presence](https://i.imgur.com/LvPTykr.png)
+![Discord rich presence](https://i.imgur.com/KhQsolf.png)
+![Discord rich presence](https://i.imgur.com/wauljPe.png)
+![Discord rich presence](https://i.imgur.com/tcag0S1.png)
+![Discord rich presence](https://i.imgur.com/fcCwbsy.png)
+![Discord rich presence](https://i.imgur.com/UPEMNrx.png)
+![Discord rich presence](https://i.imgur.com/gl2L7Bm.png)

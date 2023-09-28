@@ -23,7 +23,8 @@ namespace PhasmophobiaDiscordRPC
         private DiscordRpcClient _client;
 
         private static readonly Regex _lobbyCodeRegex = new Regex("^[0-9]+$");
-        private Timer _timer;
+        private Timer _mainTimer;
+        private Timer _presencePreviewTimer;
 
         private bool _settingDifficultyComboBoxUI;
         private bool _settingMapTypeComboBoxUI;
@@ -45,11 +46,8 @@ namespace PhasmophobiaDiscordRPC
             SetPlayersListUI(new List<PlayerData>());
             SetDiscordRichPresencePreviewUIState(false);
 
-            _timer = new Timer();
-            _timer.Elapsed += new ElapsedEventHandler(MainTick);
-            _timer.Interval = 1000;
-            _timer.Start();
-
+            InitializeTimers();
+            
             _settingDifficultyComboBoxUI = false;
             _settingMapTypeComboBoxUI = false;
 
@@ -79,6 +77,19 @@ namespace PhasmophobiaDiscordRPC
             PlayerLogReader.Instance.Deinitialize();
 
             DisposeDiscordRpc();
+        }
+
+        private void InitializeTimers()
+        {
+            _mainTimer = new Timer();
+            _mainTimer.Elapsed += new ElapsedEventHandler(MainTick);
+            _mainTimer.Interval = 1000;
+            _mainTimer.Start();
+
+            _presencePreviewTimer = new Timer();
+            _presencePreviewTimer.Elapsed += new ElapsedEventHandler(PresencePreviewTick);
+            _presencePreviewTimer.Interval = 500;
+            _presencePreviewTimer.Stop();
         }
 
         private void InitializeDiscordRpc()
@@ -125,10 +136,15 @@ namespace PhasmophobiaDiscordRPC
         {
             GameStateManager.Instance.Tick();
 
-            if (GameStateManager.Instance.GetPhasmophobiaAppState() != PhasmophobiaAppState.Open) return;
+            if (GameStateManager.Instance.GetPhasmophobiaAppState() == PhasmophobiaAppState.Open)
+            {
+                PlayerLogReader.Instance.Tick();
+            }
+        }
 
+        private void PresencePreviewTick(object source, ElapsedEventArgs e)
+        {
             DiscordRichPresenceTick();
-            PlayerLogReader.Instance.Tick();
         }
 
         #region Phasmophobia App State
@@ -143,6 +159,8 @@ namespace PhasmophobiaDiscordRPC
             SetPhasmophobiaAppStatusUI(PhasmophobiaAppState.Closed);
             SetPlayersListUI(new List<PlayerData>());
 
+            _presencePreviewTimer.Stop();
+
             this.Dispatcher.Invoke(() =>
             {
                 DifficultyComboBox.SelectedIndex = 0;
@@ -155,6 +173,8 @@ namespace PhasmophobiaDiscordRPC
         private void OnPhasmophobiaOpened()
         {
             SetPhasmophobiaAppStatusUI(PhasmophobiaAppState.Open);
+
+            _presencePreviewTimer.Start();
         }
         #endregion
 

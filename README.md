@@ -8,6 +8,8 @@ Uses [Lachee's DiscordRPC for C#](https://github.com/Lachee/discord-rpc-csharp)<
 ## ![Download Icon](https://i.imgur.com/TpnrFSH.png) Download
 Download the latest release [here](https://github.com/ZehsTeam/PhasmophobiaDiscordRPC/releases)
 
+<a href="#screenshots---program">See screenshots</a>
+
 ## Safe to use? - Game state detection
 
 This program is safe to use since it only uses the **Player.log** file to detect the current game state.
@@ -57,7 +59,7 @@ Download the [latest release](https://github.com/ZehsTeam/PhasmophobiaDiscordRPC
 ## Screenshots - Program
 ![Program Window](https://i.imgur.com/2DqwLgZ.png)
 ![Program Window](https://i.imgur.com/3e4oePw.png)
-## Screenshots - Discord rich presence
+## Screenshots - Discord
 ![Discord rich presence](https://i.imgur.com/KhQsolf.png)
 ![Discord rich presence](https://i.imgur.com/wauljPe.png)
 ![Discord rich presence](https://i.imgur.com/tcag0S1.png)

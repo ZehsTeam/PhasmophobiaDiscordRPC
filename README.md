@@ -16,7 +16,7 @@ This program is safe to use since it only uses the **Player.log** file to detect
 
 **Player.log** file location:
 ```
-C:\Users\<User>\AppData\LocalLow\Kinetic Games\Phasmophobia\Player.log
+%localappdata%\..\LocalLow\Kinetic Games\Phasmophobia\Player.log
 ```
 
 ## How to use

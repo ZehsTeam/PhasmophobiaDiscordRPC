@@ -11,11 +11,8 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <materialDesign:BundledTheme
-                    BaseTheme="Dark"
-                    PrimaryColor="Blue"
-                    SecondaryColor="Lime" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Dark.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <!--  Colors  -->
@@ -92,6 +89,12 @@
                 <Setter Property="FontFamily" Value="{DynamicResource MaterialDesignFont}" />
                 <Setter Property="FontSize" Value="12" />
                 <Setter Property="FontWeight" Value="Normal" />
+            </Style>
+
+            <!--  Menu  -->
+            <Style BasedOn="{StaticResource MaterialDesignMenu}" TargetType="{x:Type Menu}">
+                <Setter Property="Background" Value="{StaticResource Background2}" />
+                <Setter Property="wpf:MenuAssist.TopLevelMenuItemHeight" Value="30" />
             </Style>
 
             <!--  ComboBox  -->

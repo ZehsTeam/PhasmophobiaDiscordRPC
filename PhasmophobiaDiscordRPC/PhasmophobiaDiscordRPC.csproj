@@ -24,6 +24,7 @@
     <Resource Include="img\map-camp_woodwind.png" />
     <Resource Include="img\map-grafton_farmhouse.png" />
     <Resource Include="img\map-maple_lodge_campsite.png" />
+    <Resource Include="img\map-old_maple_lodge_campsite.png" />
     <Resource Include="img\map-prison.png" />
     <Resource Include="img\map-random.png" />
     <Resource Include="img\map-sunny_meadows.png" />

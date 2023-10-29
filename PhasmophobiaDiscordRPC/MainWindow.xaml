@@ -29,6 +29,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
             <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
             <RowDefinition />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
@@ -84,9 +85,27 @@
             </StackPanel>
         </Grid>
 
+        <!--  Topbar Menu  -->
+        <Menu Grid.Row="1" Visibility="Collapsed">
+            <MenuItem Header="Settings">
+                <MenuItem Header="Topmost" IsCheckable="true" />
+                <Separator />
+                <MenuItem Header="Run on Startup" IsCheckable="true" />
+                <MenuItem Header="Start Minimized" IsCheckable="true" />
+                <Separator />
+                <MenuItem Header="Check for Updates" IsCheckable="true" />
+            </MenuItem>
+            <MenuItem Header="Help">
+                <MenuItem Header="GitHub Page" />
+                <Separator />
+                <MenuItem Header="Check for Updates..." />
+            </MenuItem>
+            <MenuItem Click="DownloadUpdate_Click" Header="Download Update" />
+        </Menu>
+
         <!--  Phasmophobia App State  -->
         <Border
-            Grid.Row="1"
+            Grid.Row="2"
             Height="60"
             Margin="10,10,10,5"
             Style="{DynamicResource BorderDefault}">
@@ -131,7 +150,7 @@
         </Border>
 
         <!--  Settings  -->
-        <Grid Grid.Row="2" Margin="10,5,10,5">
+        <Grid Grid.Row="3" Margin="10,5,10,5">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <StackPanel Orientation="Vertical">
                     <!--  Lobby Type & Lobby Code  -->
@@ -378,7 +397,7 @@
         </Grid>
 
         <!--  Discord Presence Preview  -->
-        <Grid Grid.Row="3" Margin="10,5,10,10">
+        <Grid Grid.Row="4" Margin="10,5,10,10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition />
@@ -449,8 +468,8 @@
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         Visibility="Collapsed">
-                        <!--  Status Offline  -->
-                        <TextBlock Foreground="{StaticResource Foreground2}" Text="Status Offline" />
+                        <!--  Offline  -->
+                        <TextBlock Foreground="{StaticResource Foreground2}" Text="Offline" />
                     </Grid>
                 </Grid>
             </Border>

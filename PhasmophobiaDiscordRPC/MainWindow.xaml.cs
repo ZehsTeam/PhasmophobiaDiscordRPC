@@ -630,5 +630,16 @@ namespace PhasmophobiaDiscordRPC
             Color color = (Color)ColorConverter.ConvertFromString(hex);
             return new System.Windows.Media.SolidColorBrush(color);
         }
+
+        private void DownloadUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            var psi = new ProcessStartInfo
+            {
+                FileName = "https://github.com/ZehsTeam/PhasmophobiaDiscordRPC/releases",
+                UseShellExecute = true
+            };
+
+            Process.Start(psi);
+        }
     }
 }
